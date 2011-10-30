@@ -113,14 +113,15 @@ const Status BufMgr::readPage(File* file, const int PageNo, Page*& page)
     Status s = hashTable->lookup(file, PageNo, frameNo);
     if(s == OK) //Page in BufferPool
     {
-        //Set refBit
-        //increment pinCnt
+        bufTable[frameNo].refbit = true;
+        bufTable[frameNo].pinCnt++;
+        page = &bufPool[frameNo];
     }
     else
     {
-        //allocBuf(?);
+        s = allocBuf(frameNo);
+        s = file->readPage(PageNo, page);
     }
-    s = file->readPage(PageNo, page);
     err.print(s);
     return s;
 }
