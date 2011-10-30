@@ -66,6 +66,7 @@ BufMgr::~BufMgr() {
 const Status BufMgr::allocBuf(int & frame) 
 {
     //DO
+    Status s;
     bool frameSet = false; //Remains false until frame needs to be set
     
     while(!frameSet)
@@ -108,7 +109,9 @@ const Status BufMgr::allocBuf(int & frame)
 const Status BufMgr::readPage(File* file, const int PageNo, Page*& page)
 {
     //DO
-    if(true) //Page in BufferPool
+    int frameNo;
+    Status s = hashTable->lookup(file, PageNo, frameNo);
+    if(s == OK) //Page in BufferPool
     {
         //Set refBit
         //increment pinCnt
@@ -127,6 +130,7 @@ const Status BufMgr::unPinPage(File* file, const int PageNo,
 			       const bool dirty) 
 {
     //DO
+    Status s;
     if(true)//pinCount = 0
     {
         s = PAGENOTPINNED;
@@ -148,6 +152,7 @@ const Status BufMgr::unPinPage(File* file, const int PageNo,
 const Status BufMgr::allocPage(File* file, int& pageNo, Page*& page) 
 {
     //DO
+    Status s;
     int pageNum = file->allocatePage(pageNo);
     allocBuf(pageNum);
     //Insert entry into hashtable, and call Set() on frame to set it up properly(?)

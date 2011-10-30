@@ -106,7 +106,6 @@ private:
   BufDesc*	 bufTable;  	// vector of status info, 1 per page
   BufStats	 bufStats;	// buffer pool statistics
   Error err;  //Error object to print status
-  Status s;  //All functions return this
 
   const Status allocBuf(int & frame);   // allocate a free frame.  
   const void releaseBuf(int frame); // return unused frame to end of list
