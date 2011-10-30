@@ -84,6 +84,7 @@ const Status BufMgr::allocBuf(int & frame)
                     if(true)//dirtyBitSet
                     {
                         //flush Page To Disk
+                        
                     }
                     frameSet = true;
                 }

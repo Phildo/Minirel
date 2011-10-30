@@ -111,6 +111,7 @@
 		4A0FDB4B1457C70F00E366B4 /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
+				LastUpgradeCheck = 0420;
 				ORGANIZATIONNAME = "UW Madison";
 			};
 			buildConfigurationList = 4A0FDB4E1457C70F00E366B4 /* Build configuration list for PBXProject "Minirel" */;
