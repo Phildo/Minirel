@@ -102,6 +102,7 @@ const Status BufMgr::allocBuf(int & frame)
     
     if(frameSet)
     {
+        BufDesc a = bufTable[clockHand];
         s = OK;
 
     }
