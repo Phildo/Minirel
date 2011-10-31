@@ -74,7 +74,7 @@ const Status BufMgr::allocBuf(int & frame)
     {
         advanceClock();
         ticks++;
-        if(bufTable[clockHand].valid)
+        if(bufTable[clockHand].valid == true)
         {
             if(bufTable[clockHand].refbit)
             {
@@ -84,7 +84,7 @@ const Status BufMgr::allocBuf(int & frame)
             {
                 if(bufTable[clockHand].pinCnt == 0)
                 {
-                    if(bufTable[clockHand].dirty)
+                    if(bufTable[clockHand].dirty ==  true)
                     {
                         s = bufTable[clockHand].file->writePage(bufTable[clockHand].pageNo, &bufPool[clockHand]);
                         if(s != OK) return s;
@@ -102,8 +102,10 @@ const Status BufMgr::allocBuf(int & frame)
     
     if(frameSet)
     {
-        bufTable[clockHand].Set(bufTable[clockHand].file,bufTable[clockHand].pageNo);
-        s = bufTable->file->allocatePage(frame);
+        int pageNo;
+        s = bufTable[clockHand].file->allocatePage(pageNo);
+        if(s == OK)
+        bufTable[clockHand].Set(bufTable[clockHand].file,pageNo);
     }
     else
     {
@@ -162,7 +164,7 @@ const Status BufMgr::unPinPage(File* file, const int PageNo,
         }
         else {
             bufTable[frameNo].pinCnt--;
-            if(dirty) bufTable[frameNo].dirty = true;
+            if(dirty == true) bufTable[frameNo].dirty = true;
         }
     }
     err.print(s);
