@@ -86,9 +86,8 @@ const Status BufMgr::allocBuf(int & frame)
                 {
                     if(bufTable[clockHand].dirty)
                     {
-                        //flush Page To Disk
-                        bufTable[clockHand].file->writePage(bufTable[clockHand].pageNo, &bufPool[clockHand]);
-                        
+                        s = bufTable[clockHand].file->writePage(bufTable[clockHand].pageNo, &bufPool[clockHand]);
+                        if(s != OK) return s;
                     }
                     frameSet = true;
                 }
