@@ -69,10 +69,11 @@ const Status BufMgr::allocBuf(int & frame)
     Status s;
     bool frameSet = false; //Remains false until frame needs to be set
     int framesPinned = 0;
+    int initClockHand = clockHand;
     
-    while(!frameSet && framesPinned < numBufs)// && ticks < numBufs)
+    while(!frameSet && framesPinned < numBufs)
     {
-        if(clockHand == 0) framesPinned = 0;
+        if(initClockHand == clockHand) framesPinned = 0;
         advanceClock();
         
         if(bufTable[clockHand].valid == true)
