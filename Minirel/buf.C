@@ -111,8 +111,9 @@ const Status BufMgr::allocBuf(int & frame)
 const Status BufMgr::readPage(File* file, const int PageNo, Page*& page)
 {
     //DO
+    Status s;
     int frameNo;
-    Status s = hashTable->lookup(file, PageNo, frameNo);
+    s = hashTable->lookup(file, PageNo, frameNo);
     if(s == OK) //Page in BufferPool
     {
         bufTable[frameNo].refbit = true;
@@ -144,17 +145,18 @@ const Status BufMgr::unPinPage(File* file, const int PageNo,
 			       const bool dirty) 
 {
     //DO
+    Status s;
     int frameNo;
-    Status s = hashTable->lookup(file, PageNo, frameNo);
+    s = hashTable->lookup(file, PageNo, frameNo);
     if(s == OK){
-    if(bufTable[frameNo].pinCnt == 0)//pinCount = 0
-    {
-        s = PAGENOTPINNED;
-    }
-    else {
-        bufTable[frameNo].pinCnt--;
-        if(dirty) bufTable[frameNo].dirty = true;
-    }
+        if(bufTable[frameNo].pinCnt == 0)//pinCount = 0
+        {
+            s = PAGENOTPINNED;
+        }
+        else {
+            bufTable[frameNo].pinCnt--;
+            if(dirty) bufTable[frameNo].dirty = true;
+        }
     }
     err.print(s);
     return s;
