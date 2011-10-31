@@ -120,7 +120,18 @@ const Status BufMgr::readPage(File* file, const int PageNo, Page*& page)
     else
     {
         s = allocBuf(frameNo);
-        s = file->readPage(PageNo, page);
+        if(s == OK)
+        {
+            s = file->readPage(PageNo, page);
+            if(s == OK)
+            {
+                s = hashTable->insert(file, PageNo, frameNo);
+                if(s == OK)
+                {
+                    bufTable[frameNo].Set(file,PageNo);
+                }
+            }
+        }
     }
     err.print(s);
     return s;
