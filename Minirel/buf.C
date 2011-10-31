@@ -102,11 +102,8 @@ const Status BufMgr::allocBuf(int & frame)
     
     if(frameSet)
     {
-<<<<<<< HEAD
         s = OK;
-=======
 
->>>>>>> dfadfd
     }
     else
     {
