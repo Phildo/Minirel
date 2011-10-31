@@ -102,10 +102,10 @@ const Status BufMgr::allocBuf(int & frame)
     
     if(frameSet)
     {
-        int pageNo;
-        s = bufTable[clockHand].file->allocatePage(pageNo);
-        if(s == OK)
-        	bufTable[clockHand].Set(bufTable[clockHand].file,pageNo);
+       // int pageNo;
+       // s = allocPage(bufTable[clockHand].file, pageNo, p);
+       // if(s == OK)
+       // bufTable[clockHand].Set(bufTable[clockHand].file,bufTable[clockHand].pageNo);
     }
     else
     {
