@@ -9,20 +9,6 @@
          continueAfterRunningActions = "No"
          isPathRelative = "1"
          filePath = "Minirel/buf.C"
-         timestampString = "341719063.017394"
-         startingColumnNumber = "9223372036854775807"
-         endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "107"
-         endingLineNumber = "107"
-         landmarkName = "allocBuf()"
-         landmarkType = "7">
-      </FileBreakpoint>
-      <FileBreakpoint
-         shouldBeEnabled = "Yes"
-         ignoreCount = "0"
-         continueAfterRunningActions = "No"
-         isPathRelative = "1"
-         filePath = "Minirel/buf.C"
          timestampString = "341719067.50559"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
