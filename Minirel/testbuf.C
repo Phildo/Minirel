@@ -44,6 +44,7 @@ int main()
     int         j[num];    
 
     // create buffer manager
+
     bufMgr = new BufMgr(num);
 
     // create dummy files
