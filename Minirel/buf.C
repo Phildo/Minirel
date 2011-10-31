@@ -68,10 +68,12 @@ const Status BufMgr::allocBuf(int & frame)
     //DO
     Status s;
     bool frameSet = false; //Remains false until frame needs to be set
+    int ticks = 0;
     
-    while(!frameSet)
+    while(!frameSet && ticks < numBufs)
     {
         advanceClock();
+        ticks++;
         if(bufTable[clockHand].valid)
         {
             if(bufTable[clockHand].refbit)
@@ -98,11 +100,16 @@ const Status BufMgr::allocBuf(int & frame)
         }
     }
     
-    //Invoke Set() on frame
-    bufTable[clockHand].Set(bufTable[clockHand].file,bufTable[clockHand].pageNo);
-        
-    //Use Frame
-   // s = bufTable->file->allocatePage(frame);
+    if(frameSet)
+    {
+        bufTable[clockHand].Set(bufTable[clockHand].file,bufTable[clockHand].pageNo);
+        s = bufTable->file->allocatePage(frame);
+    }
+    else
+    {
+        s = BUFFEREXCEEDED;
+    }
+    
     err.print(s);
     return s;
 }
