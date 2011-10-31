@@ -102,16 +102,14 @@ const Status BufMgr::allocBuf(int & frame)
     
     if(frameSet)
     {
-        BufDesc a = bufTable[clockHand];
-        s = OK;
-
+        frame = clockHand;
     }
     else
     {
         s = BUFFEREXCEEDED;
     }
     
-    err.print(s);
+    //err.print(s);
     return s;
 }
 
@@ -144,7 +142,7 @@ const Status BufMgr::readPage(File* file, const int PageNo, Page*& page)
             }
         }
     }
-    err.print(s);
+    //err.print(s);
     return s;
 }
 
@@ -166,7 +164,7 @@ const Status BufMgr::unPinPage(File* file, const int PageNo,
             if(dirty == true) bufTable[frameNo].dirty = true;
         }
     }
-    err.print(s);
+    //err.print(s);
     return s;
 }
 
@@ -187,7 +185,7 @@ const Status BufMgr::allocPage(File* file, int& pageNo, Page*& page)
         }
     }
     
-    err.print(s);
+    //err.print(s);
     return s;
 }
 
