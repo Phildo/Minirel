@@ -72,17 +72,17 @@ const Status BufMgr::allocBuf(int & frame)
     while(!frameSet)
     {
         advanceClock();
-        if(true)//bufPool[clockHand].validSet? //validSet
+        if(bufTable[clockHand].valid)
         {
-            if(true)//refBitSet
+            if(bufTable[clockHand].refbit)
             {
-                //clearRefBit
+                bufTable[clockHand].refbit = false;
             }
             else
             {
-                if(!true)//!pagePinned
+                if(!bufTable[clockHand].pinCnt > 0)
                 {
-                    if(true)//dirtyBitSet
+                    if(bufTable[clockHand].dirty)
                     {
                         //flush Page To Disk
                         
@@ -98,9 +98,10 @@ const Status BufMgr::allocBuf(int & frame)
     }
     
     //Invoke Set() on frame
+   // bufTable[clockHand].Set(file,PageNo);
         
     //Use Frame
-    s = bufTable->file->allocatePage(frame);
+   // s = bufTable->file->allocatePage(frame);
     err.print(s);
     return s;
 }
@@ -162,10 +163,10 @@ const Status BufMgr::allocPage(File* file, int& pageNo, Page*& page)
 {
     //DO
     Status s;
-    int frameNo = 0;
+    int frameNo;
     s = file->allocatePage(pageNo);
     if(s == OK){
-    s = allocBuf(frameNo);
+        s = allocBuf(frameNo);
         if (s == OK){
             s = hashTable->insert(file, pageNo, frameNo);
             if(s == OK){
