@@ -72,6 +72,7 @@ const Status BufMgr::allocBuf(int & frame)
     
     while(!frameSet && framesPinned < numBufs)// && ticks < numBufs)
     {
+        if(clockHand == 0) framesPinned = 0;
         advanceClock();
         
         if(bufTable[clockHand].valid == true)
