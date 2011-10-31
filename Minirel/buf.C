@@ -68,12 +68,12 @@ const Status BufMgr::allocBuf(int & frame)
     //DO
     Status s;
     bool frameSet = false; //Remains false until frame needs to be set
-    int ticks = 0;
+    int framesPinned = 0;
     
-    while(!frameSet && ticks < numBufs)
+    while(!frameSet && framesPinned < numBufs)// && ticks < numBufs)
     {
         advanceClock();
-        ticks++;
+        
         if(bufTable[clockHand].valid == true)
         {
             if(bufTable[clockHand].refbit)
@@ -91,6 +91,10 @@ const Status BufMgr::allocBuf(int & frame)
                     }
                     frameSet = true;
                 }
+                else
+                {
+                    framesPinned++;
+                }
             }
             hashTable->remove(bufTable[clockHand].file, bufTable[clockHand].pageNo);
         }
@@ -104,7 +108,7 @@ const Status BufMgr::allocBuf(int & frame)
     {
         frame = clockHand;
     }
-    else
+    else if(framesPinned == numBufs)
     {
         s = BUFFEREXCEEDED;
     }
@@ -141,6 +145,7 @@ const Status BufMgr::readPage(File* file, const int PageNo, Page*& page)
                 }
             }
         }
+        page = &bufPool[frameNo];
     }
     //err.print(s);
     return s;
