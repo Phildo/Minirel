@@ -138,7 +138,7 @@
 			<key>$classname</key>
 			<string>NSArray</string>
 		</dict>
-		<string>{{56, 82}, {1244, 753}}</string>
+		<string>{{56, 87}, {1316, 748}}</string>
 		<dict>
 			<key>$class</key>
 			<dict>
@@ -483,7 +483,7 @@
 		<string>DVTIdentifier</string>
 		<string>DVTViewMagnitude</string>
 		<string>VariablesView</string>
-		<real>375</real>
+		<real>402</real>
 		<dict>
 			<key>$classes</key>
 			<array>
@@ -523,7 +523,7 @@
 			</array>
 		</dict>
 		<string>ConsoleArea</string>
-		<real>608</real>
+		<real>653</real>
 		<dict>
 			<key>$classes</key>
 			<array>
@@ -602,7 +602,7 @@
 				</dict>
 			</array>
 		</dict>
-		<real>375</real>
+		<real>402</real>
 		<dict>
 			<key>$class</key>
 			<dict>
@@ -632,7 +632,7 @@
 				</dict>
 			</array>
 		</dict>
-		<real>608</real>
+		<real>653</real>
 		<dict>
 			<key>$class</key>
 			<dict>
@@ -1032,10 +1032,10 @@
 		<string>PrimaryDocumentVisibleCharacterRange</string>
 		<string>HideAllIssues</string>
 		<string>PrimaryDocumentSelectedCharacterRange</string>
-		<real>341720348.44481897</real>
-		<string>{1550, 893}</string>
+		<real>341720569.43937302</real>
+		<string>{2267, 481}</string>
 		<false/>
-		<string>{2007, 0}</string>
+		<string>{2655, 0}</string>
 		<string>allocBuf()</string>
 		<string>Xcode.IDEKit.EditorDocument.SourceCode</string>
 		<dict>
@@ -1079,7 +1079,7 @@
 				</dict>
 			</array>
 		</dict>
-		<string>{{0, 0}, {984, 377}}</string>
+		<string>{{0, 0}, {1056, 372}}</string>
 		<dict>
 			<key>$class</key>
 			<dict>
@@ -1149,7 +1149,7 @@
 			</array>
 		</dict>
 		<string>IDEEditor</string>
-		<real>399</real>
+		<real>394</real>
 		<dict>
 			<key>$class</key>
 			<dict>
@@ -1453,7 +1453,7 @@
 			</array>
 		</dict>
 		<string></string>
-		<real>453</real>
+		<real>448</real>
 		<dict>
 			<key>$class</key>
 			<dict>
@@ -1618,7 +1618,7 @@
 		<string>IDESCMStatusFilteringEnabled</string>
 		<string>IDESelectedObjects</string>
 		<string>IDEExpandedItemsSet</string>
-		<string>{{0, 0}, {259, 633}}</string>
+		<string>{{0, 0}, {259, 628}}</string>
 		<dict>
 			<key>$class</key>
 			<dict>
@@ -2430,7 +2430,7 @@
 				</dict>
 			</array>
 		</dict>
-		<real>984</real>
+		<real>1056</real>
 		<dict>
 			<key>$class</key>
 			<dict>
@@ -6468,9 +6468,9 @@
 				</dict>
 			</array>
 		</dict>
-		<real>341720348.44377202</real>
-		<string>{1550, 893}</string>
-		<string>{2007, 0}</string>
+		<real>341720569.43832397</real>
+		<string>{2267, 481}</string>
+		<string>{2655, 0}</string>
 		<dict>
 			<key>$class</key>
 			<dict>
@@ -7098,7 +7098,7 @@
 				<integer>612</integer>
 			</dict>
 			<key>NS.time</key>
-			<real>341720339.16558599</real>
+			<real>341720554.74753797</real>
 		</dict>
 		<dict>
 			<key>$classes</key>
@@ -7109,7 +7109,7 @@
 			<key>$classname</key>
 			<string>NSDate</string>
 		</dict>
-		<string>Today at 9:18 PM</string>
+		<string>Today at 9:22 PM</string>
 		<integer>106</integer>
 		<dict>
 			<key>$class</key>
