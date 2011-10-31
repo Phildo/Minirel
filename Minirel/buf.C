@@ -142,20 +142,17 @@ const Status BufMgr::unPinPage(File* file, const int PageNo,
 			       const bool dirty) 
 {
     //DO
-    Status s;
-    if(true)//pinCount = 0
+    int frameNo;
+    Status s = hashTable->lookup(file, PageNo, frameNo);
+    if(s == OK){
+    if(bufTable[frameNo].pinCnt == 0)//pinCount = 0
     {
         s = PAGENOTPINNED;
     }
-    else if(true)//page not in buffer pool hashtable
-    {
-        s = HASHNOTFOUND;
+    else {
+        bufTable[frameNo].pinCnt--;
+        if(dirty) bufTable[frameNo].dirty = true;
     }
-    else
-    {
-        //Decrement pinCnt
-        //set dirtyBit = dirty | dirtyBit;
-        s = OK;
     }
     err.print(s);
     return s;
