@@ -80,11 +80,12 @@ const Status BufMgr::allocBuf(int & frame)
             }
             else
             {
-                if(!bufTable[clockHand].pinCnt > 0)
+                if(bufTable[clockHand].pinCnt == 0)
                 {
                     if(bufTable[clockHand].dirty)
                     {
                         //flush Page To Disk
+                        bufTable[clockHand].file->writePage(bufTable[clockHand].pageNo, &bufPool[clockHand]);
                         
                     }
                     frameSet = true;
@@ -98,7 +99,7 @@ const Status BufMgr::allocBuf(int & frame)
     }
     
     //Invoke Set() on frame
-   // bufTable[clockHand].Set(file,PageNo);
+    bufTable[clockHand].Set(bufTable[clockHand].file,bufTable[clockHand].pageNo);
         
     //Use Frame
    // s = bufTable->file->allocatePage(frame);
