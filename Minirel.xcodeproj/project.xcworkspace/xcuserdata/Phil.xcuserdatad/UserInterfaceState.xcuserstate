@@ -1031,8 +1031,8 @@
 		<string>PrimaryDocumentVisibleCharacterRange</string>
 		<string>HideAllIssues</string>
 		<string>PrimaryDocumentSelectedCharacterRange</string>
-		<real>341719238.03550297</real>
-		<string>{2085, 575}</string>
+		<real>341719526.46817899</real>
+		<string>{1942, 683}</string>
 		<false/>
 		<string>{2564, 0}</string>
 		<string>allocBuf()</string>
@@ -6459,8 +6459,8 @@
 				</dict>
 			</array>
 		</dict>
-		<real>341719238.03500098</real>
-		<string>{2085, 575}</string>
+		<real>341719526.46749598</real>
+		<string>{1942, 683}</string>
 		<string>{2564, 0}</string>
 		<dict>
 			<key>$class</key>
