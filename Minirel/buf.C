@@ -91,16 +91,8 @@ const Status BufMgr::allocBuf(int & frame)
                         s = bufTable[clockHand].file->writePage(bufTable[clockHand].pageNo, &bufPool[clockHand]);
                         if(s != OK) return s;
                     }
-                    else {
-                        bufTable[clockHand].Clear();
-                    }
-                    bufTable[clockHand].valid = false;
-                    bufTable[clockHand].refbit = false;
-                    bufTable[clockHand].pinCnt = 0;
-                    bufTable[clockHand].dirty = false;
                     hashTable->remove(bufTable[clockHand].file, bufTable[clockHand].pageNo);
-
-                    frameSet = true;
+                   frameSet = true;
                 }
                 else
                 {
