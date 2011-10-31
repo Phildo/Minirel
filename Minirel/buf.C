@@ -170,16 +170,15 @@ const Status BufMgr::allocPage(File* file, int& pageNo, Page*& page)
     if(s == OK){
     s = allocBuf(frameNo);
         if (s == OK){
-    s = hashTable->insert(file, pageNo, frameNo);
+            s = hashTable->insert(file, pageNo, frameNo);
             if(s == OK){
-    bufTable[frameNo].Set(file, pageNo);
-    page = &bufPool[frameNo];
+                bufTable[frameNo].Set(file, pageNo);
+                page = &bufPool[frameNo];
             }
         }
     }
-    //Insert entry into hashtable, and call Set() on frame to set it up properly(?)
     
-        err.print(s);
+    err.print(s);
     return s;
 }
 
