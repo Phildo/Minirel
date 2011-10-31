@@ -1032,11 +1032,11 @@
 		<string>PrimaryDocumentVisibleCharacterRange</string>
 		<string>HideAllIssues</string>
 		<string>PrimaryDocumentSelectedCharacterRange</string>
-		<real>341720269.79084301</real>
-		<string>{4588, 647}</string>
+		<real>341720348.44481897</real>
+		<string>{1550, 893}</string>
 		<false/>
-		<string>{4324, 0}</string>
-		<string>allocPage()</string>
+		<string>{2007, 0}</string>
+		<string>allocBuf()</string>
 		<string>Xcode.IDEKit.EditorDocument.SourceCode</string>
 		<dict>
 			<key>$class</key>
@@ -2519,7 +2519,7 @@
 			<array>
 				<dict>
 					<key>CF$UID</key>
-					<integer>12</integer>
+					<integer>109</integer>
 				</dict>
 				<dict>
 					<key>CF$UID</key>
@@ -6468,9 +6468,9 @@
 				</dict>
 			</array>
 		</dict>
-		<real>341720269.78968602</real>
-		<string>{4588, 647}</string>
-		<string>{4324, 0}</string>
+		<real>341720348.44377202</real>
+		<string>{1550, 893}</string>
+		<string>{2007, 0}</string>
 		<dict>
 			<key>$class</key>
 			<dict>
@@ -6787,7 +6787,7 @@
 		<string>IDEDeviceLocation</string>
 		<string>IDEDeviceArchitecture</string>
 		<string>dvtdevice-local-computer:localhost</string>
-		<string>i386</string>
+		<string>x86_64</string>
 		<dict>
 			<key>$class</key>
 			<dict>
@@ -7098,7 +7098,7 @@
 				<integer>612</integer>
 			</dict>
 			<key>NS.time</key>
-			<real>341720264.78916103</real>
+			<real>341720339.16558599</real>
 		</dict>
 		<dict>
 			<key>$classes</key>
@@ -7109,7 +7109,7 @@
 			<key>$classname</key>
 			<string>NSDate</string>
 		</dict>
-		<string>Today at 9:17 PM</string>
+		<string>Today at 9:18 PM</string>
 		<integer>106</integer>
 		<dict>
 			<key>$class</key>
