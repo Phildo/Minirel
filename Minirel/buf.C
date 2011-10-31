@@ -114,8 +114,8 @@ const Status BufMgr::allocBuf(int & frame)
     {
         s = BUFFEREXCEEDED;
     }
-    
-    //err.print(s);
+    if(s != OK)
+    err.print(s);
     return s;
 }
 
@@ -138,7 +138,7 @@ const Status BufMgr::readPage(File* file, const int PageNo, Page*& page)
         page = &bufPool[frameNo];
         if(s == OK)
         {
-            s = file->readPage(PageNo, page);
+            s = file->readPage(PageNo, &bufPool[frameNo]);
             if(s == OK)
             {
                 s = hashTable->insert(file, PageNo, frameNo);
@@ -150,7 +150,8 @@ const Status BufMgr::readPage(File* file, const int PageNo, Page*& page)
         }
     }
 
-    //err.print(s);
+    if(s != OK)
+    err.print(s);
     return s;
 }
 
@@ -172,7 +173,8 @@ const Status BufMgr::unPinPage(File* file, const int PageNo,
             if(dirty == true) bufTable[frameNo].dirty = true;
         }
     }
-    //err.print(s);
+    if(s != OK)
+    err.print(s);
     return s;
 }
 
@@ -193,7 +195,8 @@ const Status BufMgr::allocPage(File* file, int& pageNo, Page*& page)
         }
     }
     
-    //err.print(s);
+    if(s != OK)
+    err.print(s);
     return s;
 }
 
