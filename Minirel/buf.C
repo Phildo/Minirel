@@ -105,7 +105,7 @@ const Status BufMgr::allocBuf(int & frame)
         int pageNo;
         s = bufTable[clockHand].file->allocatePage(pageNo);
         if(s == OK)
-        bufTable[clockHand].Set(bufTable[clockHand].file,pageNo);
+        	bufTable[clockHand].Set(bufTable[clockHand].file,pageNo);
     }
     else
     {
