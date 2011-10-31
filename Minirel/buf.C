@@ -106,7 +106,14 @@ const Status BufMgr::allocBuf(int & frame)
     
     if(frameSet)
     {
+<<<<<<< HEAD
         frame = clockHand;
+=======
+        s = OK;
+        frame = clockHand;
+        
+
+>>>>>>> d
     }
     else if(framesPinned == numBufs)
     {
