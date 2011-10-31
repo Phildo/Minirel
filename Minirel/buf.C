@@ -92,6 +92,7 @@ const Status BufMgr::allocBuf(int & frame)
                     frameSet = true;
                 }
             }
+            hashTable->remove(bufTable[clockHand].file, bufTable[clockHand].pageNo);
         }
         else
         {
