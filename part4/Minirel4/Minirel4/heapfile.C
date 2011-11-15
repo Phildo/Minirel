@@ -47,28 +47,33 @@ HeapFile::HeapFile(const string & fileName, Status& returnStatus)
     Page*	pagePtr;
 
     cout << "opening file " << fileName << endl;
-
     // open the file and read in the header page and the first data page
-    if ((status = db.openFile(fileName, filePtr)) == OK)
+    if ((status = db.openFile(fileName, filePtr)) == OK)	
     {
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
+        if ((status = filePtr->getFirstPage(headerPageNo)) == OK)
+        {
+            if ((status = bufMgr->readPage(filePtr, headerPageNo, pagePtr)) == OK)
+            {
+                headerPage = (FileHdrPage *) pagePtr;
+                hdrDirtyFlag = false;
+        
+                if ((status = pagePtr->getNextPage(curPageNo)) == OK)
+                {
+                     if ((status = bufMgr->readPage(filePtr, curPageNo, pagePtr)) == OK)
+                     {
+                          curPage = pagePtr;
+                          curDirtyFlag = false;
+
+                          curRec = NULLRID;
+                          return;
+                     }
+                }
+            }
+        }
     }
-    else
-    {
-    	cerr << "open of heap file failed\n";
-		returnStatus = status;
-		return;
-    }
+    cerr << "open of heap file failed\n";
+    returnStatus = status;
+    return;
 }
 
 // the destructor closes the file
