@@ -15,23 +15,17 @@ const Status createHeapFile(const string fileName)
     status = db.openFile(fileName, file);
     if (status != OK)
     {
-		// file doesn't exist. First create it and allocate
-        // an empty header page and data page.
-        //This function creates an empty (well, almost empty) heap file. 
+
+        db.createFile(fileName);
+        bufMgr->allocPage(file, hdrPageNo, newPage);
+        hdrPage = (FileHdrPage *)newPage;
         
-        db.createFile(fileName); //To do this create a db level file by calling db->createFile(). 
-       
-        bufMgr->allocPage(file, hdrPageNo, newPage); //Then, allocate an empty page by invoking bufMgr->allocPage() appropriately.
-                                //As you know allocPage() will return a pointer to an empty page in the buffer pool along with the page number of the page. 
-        hdrPage = (FileHdrPage *)newPage;       //Take the Page* pointer returned from allocPage() and cast it to a FileHdrPage*. Using this pointer initialize the values in the header page.  
+        //hdrPage->pageCnt = 0;
+        //hdrPage->recCnt = 0;
         
-        hdrPage->pageCnt = 0;
-        hdrPage->recCnt = 0;
-        
-        bufMgr->allocPage(file, newPageNo, newPage);    //Then make a second call to bufMgr->allocPage(). This page will be the first data page of the file. 
-        newPage->init(newPageNo);   //Using the Page* pointer returned, invoke its init() method to initialize the page contents. 
-        hdrPage->firstPage = hdrPage->lastPage = newPageNo;     //Finally, store the page number of the data page in firstPage and lastPage attributes of the FileHdrPage.
-        
+        bufMgr->allocPage(file, newPageNo, newPage); 
+        newPage->init(newPageNo); 
+        hdrPage->firstPage = hdrPage->lastPage = newPageNo;         
         bufMgr->unPinPage(file, hdrPageNo, true);
         bufMgr->unPinPage(file, newPageNo, true);
     }
@@ -127,15 +121,14 @@ const int HeapFile::getRecCnt() const
 const Status HeapFile::getRecord(const RID &  rid, Record & rec)
 {
     Status status;
-
-    // cout<< "getRecord. record (" << rid.pageNo << "." << rid.slotNo << ")" << endl;
-   
-   
-   
-   
-   
-   
-   
+    if(rid.pageNo != curPageNo)
+    {
+        bufMgr->unPinPage(filePtr, curPageNo, curDirtyFlag);
+        status = bufMgr->readPage(filePtr, rid.pageNo, curPage);
+        curPageNo = rid.pageNo;
+    }
+    status = curPage->getRecord(rid, rec);
+    return status;
 }
 
 HeapFileScan::HeapFileScan(const string & name,
