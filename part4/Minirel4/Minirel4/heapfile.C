@@ -4,6 +4,10 @@
 // routine to create a heapfile
 const Status createHeapFile(const string fileName)
 {
+        //Using the Page* pointer returned, invoke its init() method to initialize the page contents.  Finally, store the page number of the data page in firstPage and lastPage attributes of the FileHdrPage.
+        
+        //When you have done all this unpin both pages and mark them as dirty.
+        
     File* 		file;
     Status 		status;
     FileHdrPage*	hdrPage;
@@ -17,10 +21,13 @@ const Status createHeapFile(const string fileName)
     {
         if((status = db.createFile(fileName)) == OK)
         {
+            status = db.openFile(fileName, file);
+            if (status != OK) return status;
+
             if((status = bufMgr->allocPage(file, hdrPageNo, newPage)) == OK)
                 {
                 hdrPage = (FileHdrPage *)newPage;
-                hdrPage->pageCnt = 0;
+                hdrPage->pageCnt = 1;
                 hdrPage->recCnt = 0;
         
                 if((status = bufMgr->allocPage(file, newPageNo, newPage)) == OK)
@@ -63,17 +70,13 @@ HeapFile::HeapFile(const string & fileName, Status& returnStatus)
             {
                 headerPage = (FileHdrPage *) pagePtr;
                 hdrDirtyFlag = false;
-        
-                if ((status = pagePtr->getNextPage(curPageNo)) == OK)
+                curPageNo = headerPage->firstPage;
+                if ((status = bufMgr->readPage(filePtr, curPageNo, pagePtr)) == OK)
                 {
-                     if ((status = bufMgr->readPage(filePtr, curPageNo, pagePtr)) == OK)
-                     {
-                          curPage = pagePtr;
-                          curDirtyFlag = false;
-
-                          curRec = NULLRID;
-                          return;
-                     }
+                    curPage = pagePtr;
+                    curDirtyFlag = false;
+                    curRec = NULLRID;
+                    return;
                 }
             }
         }
@@ -255,9 +258,6 @@ const Status HeapFileScan::scanNext(RID& outRid)
         status = curPage->firstRecord(nextRid);
         if(status != OK) return status;
 
-        status = curPage->getRecord(nextRid, rec);
-        if(status != OK) return status;
-
         while(status == OK)
         {
             status = curPage->getRecord(nextRid, rec);
@@ -269,7 +269,7 @@ const Status HeapFileScan::scanNext(RID& outRid)
                 outRid = nextRid;
                 return OK;
             }
-            
+            tmpRid = nextRid;
             status = curPage->nextRecord(tmpRid, nextRid);
         }
         
@@ -279,7 +279,7 @@ const Status HeapFileScan::scanNext(RID& outRid)
         status = curPage->getNextPage(nextPageNo);
         if(status != OK) return status;
     }
-	return status;
+	return FILEEOF;
 }
 
 
@@ -409,14 +409,18 @@ const Status InsertFileScan::insertRecord(const Record & rec, RID& outRid)
     {
         if((status = bufMgr->allocPage(filePtr, newPageNo, newPage)) == OK)//If the current page is full then allocate a new page
         {
-            if((status = newPage->insertRecord(rec, outRid)) == OK)//and insert the record into the new page
+            headerPage->pageCnt++;//(make sure that you update the header page appropriately;
+            unpinstatus = bufMgr->unPinPage(filePtr, curPageNo, curDirtyFlag);
+            curPage = newPage; //you also have to make the newly allocated page into the current page;
+            curPageNo = newPageNo;
+            curPage->init(curPageNo);
+            //status = bufMgr->readPage(filePtr, curPageNo, curPage);//further, you have to pin and unpin pages appropriately).
+            if(status != OK) return status;
+            
+            if((status = curPage->insertRecord(rec, outRid)) == OK)//and insert the record into the new page
             {
-                headerPage->pageCnt++;//(make sure that you update the header page appropriately;
+                curDirtyFlag = true;
                 headerPage->recCnt++;
-                unpinstatus = bufMgr->unPinPage(filePtr, curPageNo, curDirtyFlag);
-                bufMgr->readPage(filePtr, newPageNo, newPage);//further, you have to pin and unpin pages appropriately).
-                curPage = newPage; //you also have to make the newly allocated page into the current page;
-                curPageNo = newPageNo;
             }
         }
     }
