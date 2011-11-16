@@ -15,21 +15,30 @@ const Status createHeapFile(const string fileName)
     status = db.openFile(fileName, file);
     if (status != OK)
     {
-
-        db.createFile(fileName);
-        bufMgr->allocPage(file, hdrPageNo, newPage);
-        hdrPage = (FileHdrPage *)newPage;
+        if((status = db.createFile(fileName)) == OK)
+        {
+            if((status = bufMgr->allocPage(file, hdrPageNo, newPage)) == OK)
+                {
+                hdrPage = (FileHdrPage *)newPage;
+                hdrPage->pageCnt = 0;
+                hdrPage->recCnt = 0;
         
-        //hdrPage->pageCnt = 0;
-        //hdrPage->recCnt = 0;
-        
-        bufMgr->allocPage(file, newPageNo, newPage); 
-        newPage->init(newPageNo); 
-        hdrPage->firstPage = hdrPage->lastPage = newPageNo;         
-        bufMgr->unPinPage(file, hdrPageNo, true);
-        bufMgr->unPinPage(file, newPageNo, true);
+                if((status = bufMgr->allocPage(file, newPageNo, newPage)) == OK)
+                {
+                    newPage->init(newPageNo); 
+                    hdrPage->firstPage = hdrPage->lastPage = newPageNo;         
+                    if((status = bufMgr->unPinPage(file, hdrPageNo, true)) == OK)
+                    {
+                        status = bufMgr->unPinPage(file, newPageNo, true);
+                    }
+                }
+            }
+        }
     }
-    return (FILEEXISTS);
+    else
+        return (FILEEXISTS);
+    
+    return status;
 }
 
 // routine to destroy a heapfile
@@ -123,9 +132,13 @@ const Status HeapFile::getRecord(const RID &  rid, Record & rec)
     Status status;
     if(rid.pageNo != curPageNo)
     {
-        bufMgr->unPinPage(filePtr, curPageNo, curDirtyFlag);
-        status = bufMgr->readPage(filePtr, rid.pageNo, curPage);
-        curPageNo = rid.pageNo;
+        if((status = bufMgr->unPinPage(filePtr, curPageNo, curDirtyFlag)) == OK)
+        {
+            if((status = bufMgr->readPage(filePtr, rid.pageNo, curPage)) == OK)
+            {
+                curPageNo = rid.pageNo;
+            }
+        }
     }
     status = curPage->getRecord(rid, rec);
     return status;
@@ -217,7 +230,7 @@ const Status HeapFileScan::resetScan()
     return OK;
 }
 
-
+//Returns (via the outRid parameter) the RID of the next record that satisfies the scan predicate.
 const Status HeapFileScan::scanNext(RID& outRid)
 {
     Status 	status = OK;
@@ -225,17 +238,48 @@ const Status HeapFileScan::scanNext(RID& outRid)
     RID		tmpRid;
     int 	nextPageNo;
     Record      rec;
-
     
-	
-	
-	
-	
-	
-	
-	
-	
-	
+    //Unpins Current Page
+    status = bufMgr->unPinPage(filePtr, curPageNo, curDirtyFlag);
+    if(status != OK) return status;
+    curDirtyFlag = false;
+
+    //Read in first page
+    nextPageNo = headerPage->firstPage;
+    for(int i = 0; i < headerPage->pageCnt; i++)
+    {
+        status = bufMgr->readPage(filePtr, nextPageNo, curPage);
+        if(status != OK) return status;
+        
+        //Get first record of first page
+        status = curPage->firstRecord(nextRid);
+        if(status != OK) return status;
+
+        status = curPage->getRecord(nextRid, rec);
+        if(status != OK) return status;
+
+        while(status == OK)
+        {
+            status = curPage->getRecord(nextRid, rec);
+            if(status != OK) return status;
+
+            if(matchRec(rec))            
+            {
+                curRec = nextRid;
+                outRid = nextRid;
+                return OK;
+            }
+            
+            status = curPage->nextRecord(tmpRid, nextRid);
+        }
+        
+        status = bufMgr->unPinPage(filePtr, curPageNo, curDirtyFlag);
+        if(status != OK) return status;
+
+        status = curPage->getNextPage(nextPageNo);
+        if(status != OK) return status;
+    }
+	return status;
 }
 
 
@@ -345,12 +389,13 @@ InsertFileScan::~InsertFileScan()
 }
 
 // Insert a record into the file
+//Inserts the record described by rec into the file returning the RID of the inserted record in outRid.
 const Status InsertFileScan::insertRecord(const Record & rec, RID& outRid)
 {
     Page*	newPage;
     int		newPageNo;
     Status	status, unpinstatus;
-    RID		rid;
+    //RID		rid;
 
     // check for very large records
     if ((unsigned int) rec.length > PAGESIZE-DPFIXED)
@@ -359,18 +404,23 @@ const Status InsertFileScan::insertRecord(const Record & rec, RID& outRid)
         return INVALIDRECLEN;
     }
 
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
+    //if((status = ) == OK)
+    if((status = curPage->insertRecord(rec, outRid)) == NOSPACE) //First try to insert into the current page.
+    {
+        if((status = bufMgr->allocPage(filePtr, newPageNo, newPage)) == OK)//If the current page is full then allocate a new page
+        {
+            if((status = newPage->insertRecord(rec, outRid)) == OK)//and insert the record into the new page
+            {
+                headerPage->pageCnt++;//(make sure that you update the header page appropriately;
+                headerPage->recCnt++;
+                unpinstatus = bufMgr->unPinPage(filePtr, curPageNo, curDirtyFlag);
+                bufMgr->readPage(filePtr, newPageNo, newPage);//further, you have to pin and unpin pages appropriately).
+                curPage = newPage; //you also have to make the newly allocated page into the current page;
+                curPageNo = newPageNo;
+            }
+        }
+    }
+    return status;
 }
 
 
