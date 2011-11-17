@@ -39,7 +39,10 @@ const Status createHeapFile(const string fileName)
         }
     }
     else
+    {
+        db.closeFile(file);
         return (FILEEXISTS);
+    }
     
     return status;
 }
