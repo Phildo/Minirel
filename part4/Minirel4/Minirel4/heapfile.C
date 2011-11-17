@@ -4,10 +4,6 @@
 // routine to create a heapfile
 const Status createHeapFile(const string fileName)
 {
-        //Using the Page* pointer returned, invoke its init() method to initialize the page contents.  Finally, store the page number of the data page in firstPage and lastPage attributes of the FileHdrPage.
-        
-        //When you have done all this unpin both pages and mark them as dirty.
-        
     File* 		file;
     Status 		status;
     FileHdrPage*	hdrPage;
@@ -233,7 +229,6 @@ const Status HeapFileScan::resetScan()
     return OK;
 }
 
-//Returns (via the outRid parameter) the RID of the next record that satisfies the scan predicate.
 const Status HeapFileScan::scanNext(RID& outRid)
 {
     Status 	status = OK;
@@ -241,7 +236,42 @@ const Status HeapFileScan::scanNext(RID& outRid)
     RID		tmpRid;
     int 	nextPageNo;
     Record      rec;
+
+    tmpRid = curRec;
+    while(status == OK)
+    {
+        status = curPage->nextRecord(tmpRid, nextRid);
+        if(status != OK)
+        {
+            status = curPage->getNextPage(nextPageNo);
+            if(status != OK) return status;
+            if(nextPageNo == -1) return FILEEOF;
+                
+            status = bufMgr->unPinPage(filePtr, curPageNo, curDirtyFlag);
+            if(status != OK) return status;
+        
+            status = bufMgr->readPage(filePtr, nextPageNo, curPage);
+            if(status != OK) return status;
+            curDirtyFlag = false;
+        
+            status = curPage->firstRecord(nextRid);
+            if(status != OK) return status;
+        }
     
+        status = curPage->getRecord(nextRid, rec);
+        if(status != OK) return status;
+    
+        if(matchRec(rec))            
+        {
+            curRec = nextRid;
+            outRid = nextRid;
+            return OK;
+        }
+        tmpRid = nextRid;
+    }
+    return FILEEOF;
+
+    /*
     //Unpins Current Page
     status = bufMgr->unPinPage(filePtr, curPageNo, curDirtyFlag);
     if(status != OK) return status;
@@ -249,6 +279,7 @@ const Status HeapFileScan::scanNext(RID& outRid)
 
     //Read in first page
     nextPageNo = headerPage->firstPage;
+    
     for(int i = 0; i < headerPage->pageCnt; i++)
     {
         status = bufMgr->readPage(filePtr, nextPageNo, curPage);
@@ -280,6 +311,7 @@ const Status HeapFileScan::scanNext(RID& outRid)
         if(status != OK) return status;
     }
 	return FILEEOF;
+     */
 }
 
 
@@ -409,12 +441,12 @@ const Status InsertFileScan::insertRecord(const Record & rec, RID& outRid)
     {
         if((status = bufMgr->allocPage(filePtr, newPageNo, newPage)) == OK)//If the current page is full then allocate a new page
         {
-            headerPage->pageCnt++;//(make sure that you update the header page appropriately;
+            headerPage->pageCnt++;
+            curPage->setNextPage(newPageNo);
             unpinstatus = bufMgr->unPinPage(filePtr, curPageNo, curDirtyFlag);
-            curPage = newPage; //you also have to make the newly allocated page into the current page;
+            curPage = newPage;
             curPageNo = newPageNo;
             curPage->init(curPageNo);
-            //status = bufMgr->readPage(filePtr, curPageNo, curPage);//further, you have to pin and unpin pages appropriately).
             if(status != OK) return status;
             
             if((status = curPage->insertRecord(rec, outRid)) == OK)//and insert the record into the new page
