@@ -423,7 +423,6 @@ InsertFileScan::~InsertFileScan()
 }
 
 // Insert a record into the file
-//Inserts the record described by rec into the file returning the RID of the inserted record in outRid.
 const Status InsertFileScan::insertRecord(const Record & rec, RID& outRid)
 {
     Page*	newPage;
@@ -439,25 +438,25 @@ const Status InsertFileScan::insertRecord(const Record & rec, RID& outRid)
     }
 
     //if((status = ) == OK)
-    if((status = curPage->insertRecord(rec, outRid)) == NOSPACE) //First try to insert into the current page.
+    if((status = curPage->insertRecord(rec, outRid)) == NOSPACE)
     {
-        if((status = bufMgr->allocPage(filePtr, newPageNo, newPage)) == OK)//If the current page is full then allocate a new page
+        if((status = bufMgr->allocPage(filePtr, newPageNo, newPage)) == OK)
         {
             headerPage->pageCnt++;
+            hdrDirtyFlag = true;
             curPage->setNextPage(newPageNo);
             unpinstatus = bufMgr->unPinPage(filePtr, curPageNo, curDirtyFlag);
             curPage = newPage;
             curPageNo = newPageNo;
             curPage->init(curPageNo);
-            if(status != OK) return status;
             
-            if((status = curPage->insertRecord(rec, outRid)) == OK)//and insert the record into the new page
+            if((status = curPage->insertRecord(rec, outRid)) == OK)
             {
-                curDirtyFlag = true;
                 headerPage->recCnt++;
             }
         }
     }
+    curDirtyFlag = true;
     return status;
 }
 
