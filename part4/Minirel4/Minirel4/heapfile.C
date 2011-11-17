@@ -250,7 +250,8 @@ const Status HeapFileScan::scanNext(RID& outRid)
             status = bufMgr->unPinPage(filePtr, curPageNo, curDirtyFlag);
             if(status != OK) return status;
         
-            status = bufMgr->readPage(filePtr, nextPageNo, curPage);
+            curPageNo = nextPageNo;
+            status = bufMgr->readPage(filePtr, curPageNo, curPage);
             if(status != OK) return status;
             curDirtyFlag = false;
         

@@ -3511,7 +3511,7 @@
 		<string>PrimaryDocumentVisibleCharacterRange</string>
 		<string>HideAllIssues</string>
 		<string>PrimaryDocumentSelectedCharacterRange</string>
-		<real>343249110.93889201</real>
+		<real>343250080.64134997</real>
 		<string>{2120, 886}</string>
 		<false/>
 		<string>{0, 0}</string>
@@ -3560,8 +3560,8 @@
 				</dict>
 			</array>
 		</dict>
-		<real>343249828.99274498</real>
-		<string>{2526, 1127}</string>
+		<real>343250078.28597701</real>
+		<string>{2937, 1201}</string>
 		<dict>
 			<key>$class</key>
 			<dict>
@@ -3849,8 +3849,8 @@
 				</dict>
 			</array>
 		</dict>
-		<real>343249831.121454</real>
-		<string>{6128, 1035}</string>
+		<real>343250075.62101698</real>
+		<string>{6128, 1032}</string>
 		<dict>
 			<key>$class</key>
 			<dict>
@@ -4346,7 +4346,7 @@
 				<integer>364</integer>
 			</dict>
 			<key>NS.time</key>
-			<real>343249826.234761</real>
+			<real>343250067.34534502</real>
 		</dict>
 		<dict>
 			<key>$classes</key>
@@ -4357,7 +4357,7 @@
 			<key>$classname</key>
 			<string>NSDate</string>
 		</dict>
-		<string>Today at 1:10 PM</string>
+		<string>Today at 1:14 PM</string>
 		<integer>106</integer>
 		<dict>
 			<key>$class</key>
@@ -4440,7 +4440,7 @@
 				<integer>370</integer>
 			</dict>
 		</dict>
-		<string>file://localhost/Users/Phil/Documents/Dev/Minirel/part4/Minirel4/Minirel4/heapfile.C</string>
+		<string>file://localhost/Users/Phil/Documents/Dev/Minirel/part4/Minirel4/Minirel4/bufHash.C</string>
 		<dict>
 			<key>$class</key>
 			<dict>
@@ -4476,7 +4476,7 @@
 				<integer>374</integer>
 			</dict>
 		</dict>
-		<string>file://localhost/Users/Phil/Documents/Dev/Minirel/part4/Minirel4/Minirel4/bufHash.C</string>
+		<string>file://localhost/Users/Phil/Documents/Dev/Minirel/part4/Minirel4/Minirel4/heapfile.C</string>
 		<dict>
 			<key>$class</key>
 			<dict>
@@ -4608,7 +4608,7 @@
 				</dict>
 				<dict>
 					<key>CF$UID</key>
-					<integer>573</integer>
+					<integer>574</integer>
 				</dict>
 				<dict>
 					<key>CF$UID</key>
@@ -4620,7 +4620,7 @@
 				</dict>
 				<dict>
 					<key>CF$UID</key>
-					<integer>574</integer>
+					<integer>575</integer>
 				</dict>
 				<dict>
 					<key>CF$UID</key>
@@ -4699,7 +4699,7 @@
 				</dict>
 				<dict>
 					<key>CF$UID</key>
-					<integer>564</integer>
+					<integer>565</integer>
 				</dict>
 				<dict>
 					<key>CF$UID</key>
@@ -4719,7 +4719,7 @@
 		<string>IDEWorkspaceTabControllerDesignAreaSplitView</string>
 		<string>IDEShowUtilities</string>
 		<string>AssistantEditorsLayout</string>
-		<string>heapfile.C</string>
+		<string>bufHash.C</string>
 		<dict>
 			<key>$class</key>
 			<dict>
@@ -4915,7 +4915,7 @@
 				<integer>417</integer>
 			</dict>
 		</dict>
-		<string>heapfile.C</string>
+		<string>bufHash.C</string>
 		<dict>
 			<key>$classes</key>
 			<array>
@@ -4960,7 +4960,7 @@
 			<key>documentURL</key>
 			<dict>
 				<key>CF$UID</key>
-				<integer>274</integer>
+				<integer>260</integer>
 			</dict>
 			<key>timestamp</key>
 			<dict>
@@ -5665,8 +5665,8 @@
 				</dict>
 			</array>
 		</dict>
-		<real>343249831.123088</real>
-		<string>{6128, 1035}</string>
+		<real>343250080.64280999</real>
+		<string>{2120, 886}</string>
 		<string>Xcode.IDEKit.EditorDocument.SourceCode</string>
 		<dict>
 			<key>$class</key>
@@ -5685,7 +5685,7 @@
 				<integer>488</integer>
 			</dict>
 		</dict>
-		<string>file://localhost/Users/Phil/Documents/Dev/Minirel/part4/Minirel4/Minirel4/heapfile.C</string>
+		<string>file://localhost/Users/Phil/Documents/Dev/Minirel/part4/Minirel4/Minirel4/bufHash.C</string>
 		<dict>
 			<key>$class</key>
 			<dict>
@@ -5950,11 +5950,11 @@
 				</dict>
 				<dict>
 					<key>CF$UID</key>
-					<integer>529</integer>
+					<integer>530</integer>
 				</dict>
 				<dict>
 					<key>CF$UID</key>
-					<integer>533</integer>
+					<integer>534</integer>
 				</dict>
 				<dict>
 					<key>CF$UID</key>
@@ -5962,7 +5962,7 @@
 				</dict>
 				<dict>
 					<key>CF$UID</key>
-					<integer>546</integer>
+					<integer>547</integer>
 				</dict>
 			</array>
 		</dict>
@@ -6036,7 +6036,7 @@
 				</dict>
 				<dict>
 					<key>CF$UID</key>
-					<integer>527</integer>
+					<integer>528</integer>
 				</dict>
 			</array>
 		</dict>
@@ -6098,11 +6098,12 @@
 				</dict>
 				<dict>
 					<key>CF$UID</key>
-					<integer>417</integer>
+					<integer>527</integer>
 				</dict>
 			</array>
 		</dict>
 		<string>Minirel4</string>
+		<string>heapfile.C</string>
 		<dict>
 			<key>$class</key>
 			<dict>
@@ -6113,7 +6114,7 @@
 			<array>
 				<dict>
 					<key>CF$UID</key>
-					<integer>528</integer>
+					<integer>529</integer>
 				</dict>
 			</array>
 		</dict>
@@ -6141,15 +6142,15 @@
 			<array>
 				<dict>
 					<key>CF$UID</key>
-					<integer>530</integer>
-				</dict>
-				<dict>
-					<key>CF$UID</key>
 					<integer>531</integer>
 				</dict>
 				<dict>
 					<key>CF$UID</key>
 					<integer>532</integer>
+				</dict>
+				<dict>
+					<key>CF$UID</key>
+					<integer>533</integer>
 				</dict>
 			</array>
 			<key>NS.objects</key>
@@ -6181,10 +6182,6 @@
 			<array>
 				<dict>
 					<key>CF$UID</key>
-					<integer>534</integer>
-				</dict>
-				<dict>
-					<key>CF$UID</key>
 					<integer>535</integer>
 				</dict>
 				<dict>
@@ -6207,6 +6204,10 @@
 					<key>CF$UID</key>
 					<integer>540</integer>
 				</dict>
+				<dict>
+					<key>CF$UID</key>
+					<integer>541</integer>
+				</dict>
 			</array>
 			<key>NS.objects</key>
 			<array>
@@ -6224,11 +6225,11 @@
 				</dict>
 				<dict>
 					<key>CF$UID</key>
-					<integer>541</integer>
+					<integer>542</integer>
 				</dict>
 				<dict>
 					<key>CF$UID</key>
-					<integer>542</integer>
+					<integer>543</integer>
 				</dict>
 				<dict>
 					<key>CF$UID</key>
@@ -6236,7 +6237,7 @@
 				</dict>
 				<dict>
 					<key>CF$UID</key>
-					<integer>544</integer>
+					<integer>545</integer>
 				</dict>
 			</array>
 		</dict>
@@ -6252,7 +6253,7 @@
 			<key>$class</key>
 			<dict>
 				<key>CF$UID</key>
-				<integer>543</integer>
+				<integer>544</integer>
 			</dict>
 			<key>NSLength</key>
 			<integer>1</integer>
@@ -6274,7 +6275,7 @@
 			<key>$class</key>
 			<dict>
 				<key>CF$UID</key>
-				<integer>545</integer>
+				<integer>546</integer>
 			</dict>
 			<key>NSRangeCount</key>
 			<integer>0</integer>
@@ -6297,10 +6298,6 @@
 			</dict>
 			<key>NS.keys</key>
 			<array>
-				<dict>
-					<key>CF$UID</key>
-					<integer>547</integer>
-				</dict>
 				<dict>
 					<key>CF$UID</key>
 					<integer>548</integer>
@@ -6337,6 +6334,10 @@
 					<key>CF$UID</key>
 					<integer>556</integer>
 				</dict>
+				<dict>
+					<key>CF$UID</key>
+					<integer>557</integer>
+				</dict>
 			</array>
 			<key>NS.objects</key>
 			<array>
@@ -6346,27 +6347,15 @@
 				</dict>
 				<dict>
 					<key>CF$UID</key>
-					<integer>557</integer>
-				</dict>
-				<dict>
-					<key>CF$UID</key>
 					<integer>558</integer>
 				</dict>
 				<dict>
 					<key>CF$UID</key>
-					<integer>560</integer>
+					<integer>559</integer>
 				</dict>
 				<dict>
 					<key>CF$UID</key>
 					<integer>561</integer>
-				</dict>
-				<dict>
-					<key>CF$UID</key>
-					<integer>288</integer>
-				</dict>
-				<dict>
-					<key>CF$UID</key>
-					<integer>288</integer>
 				</dict>
 				<dict>
 					<key>CF$UID</key>
@@ -6378,7 +6367,19 @@
 				</dict>
 				<dict>
 					<key>CF$UID</key>
+					<integer>288</integer>
+				</dict>
+				<dict>
+					<key>CF$UID</key>
 					<integer>563</integer>
+				</dict>
+				<dict>
+					<key>CF$UID</key>
+					<integer>288</integer>
+				</dict>
+				<dict>
+					<key>CF$UID</key>
+					<integer>564</integer>
 				</dict>
 			</array>
 		</dict>
@@ -6397,7 +6398,7 @@
 			<key>$class</key>
 			<dict>
 				<key>CF$UID</key>
-				<integer>559</integer>
+				<integer>560</integer>
 			</dict>
 			<key>NS.objects</key>
 			<array/>
@@ -6416,7 +6417,7 @@
 			<key>$class</key>
 			<dict>
 				<key>CF$UID</key>
-				<integer>559</integer>
+				<integer>560</integer>
 			</dict>
 			<key>NS.objects</key>
 			<array/>
@@ -6434,7 +6435,7 @@
 			<key>$class</key>
 			<dict>
 				<key>CF$UID</key>
-				<integer>559</integer>
+				<integer>560</integer>
 			</dict>
 			<key>NS.objects</key>
 			<array/>
@@ -6443,7 +6444,7 @@
 			<key>$class</key>
 			<dict>
 				<key>CF$UID</key>
-				<integer>559</integer>
+				<integer>560</integer>
 			</dict>
 			<key>NS.objects</key>
 			<array/>
@@ -6465,7 +6466,7 @@
 			<array>
 				<dict>
 					<key>CF$UID</key>
-					<integer>565</integer>
+					<integer>566</integer>
 				</dict>
 			</array>
 		</dict>
@@ -6479,15 +6480,15 @@
 			<array>
 				<dict>
 					<key>CF$UID</key>
-					<integer>566</integer>
+					<integer>567</integer>
 				</dict>
 				<dict>
 					<key>CF$UID</key>
-					<integer>568</integer>
+					<integer>569</integer>
 				</dict>
 				<dict>
 					<key>CF$UID</key>
-					<integer>570</integer>
+					<integer>571</integer>
 				</dict>
 			</array>
 		</dict>
@@ -6516,7 +6517,7 @@
 				</dict>
 				<dict>
 					<key>CF$UID</key>
-					<integer>567</integer>
+					<integer>568</integer>
 				</dict>
 			</array>
 		</dict>
@@ -6546,7 +6547,7 @@
 				</dict>
 				<dict>
 					<key>CF$UID</key>
-					<integer>569</integer>
+					<integer>570</integer>
 				</dict>
 			</array>
 		</dict>
@@ -6572,11 +6573,11 @@
 			<array>
 				<dict>
 					<key>CF$UID</key>
-					<integer>571</integer>
+					<integer>572</integer>
 				</dict>
 				<dict>
 					<key>CF$UID</key>
-					<integer>572</integer>
+					<integer>573</integer>
 				</dict>
 			</array>
 		</dict>
