@@ -41,9 +41,10 @@ const Status createHeapFile(const string fileName)
     else
     {
         db.closeFile(file);
-        return (FILEEXISTS);
+        return FILEEXISTS;
     }
     
+    db.closeFile(file);
     return status;
 }
 
@@ -60,7 +61,7 @@ HeapFile::HeapFile(const string & fileName, Status& returnStatus)
     Page*	pagePtr;
 
     cout << "opening file " << fileName << endl;
-    // open the file and read in the header page and the first data page
+
     if ((status = db.openFile(fileName, filePtr)) == OK)	
     {
         if ((status = filePtr->getFirstPage(headerPageNo)) == OK)
@@ -75,13 +76,11 @@ HeapFile::HeapFile(const string & fileName, Status& returnStatus)
                     curPage = pagePtr;
                     curDirtyFlag = false;
                     curRec = NULLRID;
-                    returnStatus = status;
-                    return;
                 }
             }
         }
     }
-    cerr << "open of heap file failed\n";
+    if(status != OK) cerr << "open of heap file failed\n";
     returnStatus = status;
     return;
 }
