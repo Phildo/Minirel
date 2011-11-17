@@ -116,6 +116,7 @@
 		4AF853641471D14400A30CBB /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
+				LastUpgradeCheck = 0420;
 				ORGANIZATIONNAME = "UW Madison";
 			};
 			buildConfigurationList = 4AF853671471D14400A30CBB /* Build configuration list for PBXProject "Minirel4" */;
@@ -226,6 +227,7 @@
 				4AF853781471D14400A30CBB /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};
