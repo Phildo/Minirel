@@ -241,7 +241,7 @@ const Status HeapFileScan::scanNext(RID& outRid)
     while(status == OK)
     {
         status = curPage->nextRecord(tmpRid, nextRid);
-        if(status != OK)
+        while(status != OK)
         {
             status = curPage->getNextPage(nextPageNo);
             if(status != OK) return status;
@@ -256,7 +256,6 @@ const Status HeapFileScan::scanNext(RID& outRid)
             curDirtyFlag = false;
         
             status = curPage->firstRecord(nextRid);
-            if(status != OK) return status;
         }
     
         status = curPage->getRecord(nextRid, rec);
