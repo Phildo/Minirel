@@ -51,7 +51,7 @@
          continueAfterRunningActions = "No"
          isPathRelative = "1"
          filePath = "Minirel4/heapfile.C"
-         timestampString = "343250067.452587"
+         timestampString = "343251334.996728"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
          startingLineNumber = "432"
@@ -65,7 +65,7 @@
          continueAfterRunningActions = "No"
          isPathRelative = "1"
          filePath = "Minirel4/heapfile.C"
-         timestampString = "343250067.452587"
+         timestampString = "343251334.996728"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
          startingLineNumber = "433"
@@ -79,7 +79,7 @@
          continueAfterRunningActions = "No"
          isPathRelative = "1"
          filePath = "Minirel4/heapfile.C"
-         timestampString = "343250067.452587"
+         timestampString = "343251334.996728"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
          startingLineNumber = "446"
@@ -116,7 +116,7 @@
          landmarkType = "7">
       </FileBreakpoint>
       <FileBreakpoint
-         shouldBeEnabled = "Yes"
+         shouldBeEnabled = "No"
          ignoreCount = "0"
          continueAfterRunningActions = "No"
          isPathRelative = "1"
@@ -163,7 +163,7 @@
          continueAfterRunningActions = "No"
          isPathRelative = "1"
          filePath = "Minirel4/heapfile.C"
-         timestampString = "343248251.704979"
+         timestampString = "343251334.996728"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
          startingLineNumber = "237"
@@ -200,7 +200,7 @@
          landmarkType = "7">
       </FileBreakpoint>
       <FileBreakpoint
-         shouldBeEnabled = "Yes"
+         shouldBeEnabled = "No"
          ignoreCount = "0"
          continueAfterRunningActions = "No"
          isPathRelative = "1"
@@ -233,7 +233,7 @@
          continueAfterRunningActions = "No"
          isPathRelative = "1"
          filePath = "Minirel4/heapfile.C"
-         timestampString = "343249440.83644"
+         timestampString = "343251334.996728"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
          startingLineNumber = "246"
@@ -247,12 +247,54 @@
          continueAfterRunningActions = "No"
          isPathRelative = "1"
          filePath = "Minirel4/heapfile.C"
-         timestampString = "343250067.452587"
+         timestampString = "343251334.996728"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
          startingLineNumber = "446"
          endingLineNumber = "446"
          landmarkName = "insertRecord()"
+         landmarkType = "7">
+      </FileBreakpoint>
+      <FileBreakpoint
+         shouldBeEnabled = "Yes"
+         ignoreCount = "0"
+         continueAfterRunningActions = "No"
+         isPathRelative = "1"
+         filePath = "Minirel4/testfile.C"
+         timestampString = "343250302.735856"
+         startingColumnNumber = "9223372036854775807"
+         endingColumnNumber = "9223372036854775807"
+         startingLineNumber = "159"
+         endingLineNumber = "159"
+         landmarkName = "main()"
+         landmarkType = "7">
+      </FileBreakpoint>
+      <FileBreakpoint
+         shouldBeEnabled = "No"
+         ignoreCount = "0"
+         continueAfterRunningActions = "No"
+         isPathRelative = "1"
+         filePath = "Minirel4/heapfile.C"
+         timestampString = "343251242.180665"
+         startingColumnNumber = "9223372036854775807"
+         endingColumnNumber = "9223372036854775807"
+         startingLineNumber = "56"
+         endingLineNumber = "56"
+         landmarkName = "HeapFile()"
+         landmarkType = "7">
+      </FileBreakpoint>
+      <FileBreakpoint
+         shouldBeEnabled = "Yes"
+         ignoreCount = "0"
+         continueAfterRunningActions = "No"
+         isPathRelative = "1"
+         filePath = "Minirel4/testfile.C"
+         timestampString = "343251359.794045"
+         startingColumnNumber = "9223372036854775807"
+         endingColumnNumber = "9223372036854775807"
+         startingLineNumber = "184"
+         endingLineNumber = "184"
+         landmarkName = "main()"
          landmarkType = "7">
       </FileBreakpoint>
    </FileBreakpoints>

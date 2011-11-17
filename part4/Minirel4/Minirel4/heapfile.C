@@ -72,6 +72,7 @@ HeapFile::HeapFile(const string & fileName, Status& returnStatus)
                     curPage = pagePtr;
                     curDirtyFlag = false;
                     curRec = NULLRID;
+                    returnStatus = status;
                     return;
                 }
             }
@@ -143,8 +144,7 @@ const Status HeapFile::getRecord(const RID &  rid, Record & rec)
     return status;
 }
 
-HeapFileScan::HeapFileScan(const string & name,
-			   Status & status) : HeapFile(name, status)
+HeapFileScan::HeapFileScan(const string & name, Status & status) : HeapFile(name, status)
 {
     filter = NULL;
 }
