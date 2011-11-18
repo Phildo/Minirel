@@ -338,7 +338,7 @@ const Status File::intread(int pageNo, Page* pagePtr) const
   if (lseek(unixFile, pageNo * sizeof(Page), SEEK_SET) == -1)
     return UNIXERR;
 
-  int nbytes = read(unixFile, (char*)pagePtr, sizeof(Page));
+  int nbytes = (int)read(unixFile, (char*)pagePtr, sizeof(Page));
 
 #ifdef DEBUGIO
   cerr << "%%  File " << (int)this << ": read bytes ";
@@ -364,7 +364,7 @@ const Status File::intwrite(const int pageNo, const Page* pagePtr)
   if (lseek(unixFile, pageNo * sizeof(Page), SEEK_SET) == -1)
     return UNIXERR;
 
-  int nbytes = write(unixFile, (char*)pagePtr, sizeof(Page));
+  int nbytes = (int)write(unixFile, (char*)pagePtr, sizeof(Page));
 
 #ifdef DEBUGIO
   cerr << "%%  File " << (int)this << ": wrote bytes ";

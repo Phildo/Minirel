@@ -396,9 +396,9 @@ int main(int argc, char **argv)
     
     cout << endl;
     cout << "Next attempt two concurrent scans on dummy.03 " << endl;
-    int Ioffset = (char*)&rec1.i - (char*)&rec1;
+    int Ioffset = (int)((char*)&rec1.i - (char*)&rec1);
     int Ivalue = num/2;
-    int Foffset = (char*)&rec1.f - (char*)&rec1;
+    int Foffset = (int)((char*)&rec1.f - (char*)&rec1);
     float Fvalue = 0;
     
     scan1 = new HeapFileScan("dummy.03", status);
