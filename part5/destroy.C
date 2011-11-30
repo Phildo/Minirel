@@ -50,7 +50,6 @@ const Status AttrCatalog::dropRelation(const string & relation)
     
     CALL(attrCat->getRelInfo(relation, attrCnt, attrs));
     for(i = 0; i < attrCnt; i++){
-        
         CALL(attrCat->removeInfo(relation, attrs[i].attrName));
     }
 
