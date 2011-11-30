@@ -16,10 +16,29 @@ const Status RelCatalog::getInfo(const string & relation, RelDesc &record)
   Status status;
   Record rec;
   RID rid;
+    
+    HeapFileScan *hfile = new HeapFileScan(RELCATNAME, status);
+    if (status != OK) {
+        delete hfile;
+        return status;
+    }
 
+    if ((status = hfile->startScan(0, 32, STRING, relation.data(), EQ)) != OK){
+        delete hfile;
+        return status;
+    }
 
-
-
+    while((status = hfile->scanNext(rid)) == OK) {
+        if ((status = hfile->getRecord(rec)) != OK){
+            delete hfile;
+            return status;
+        }
+        memcpy(&record, rec.data, rec.length);
+        delete hfile;
+        return OK;
+    }
+    delete hfile;
+    return status;
 }
 
 
@@ -29,20 +48,49 @@ const Status RelCatalog::addInfo(RelDesc & record)
   InsertFileScan*  ifs;
   Status status;
 
-
-
-
+    ifs = new InsertFileScan(RELCATNAME, status);
+    if (status != OK) {
+        delete ifs;
+        return status;
+    }
+    Record rec;
+    
+    memcpy(&rec, &record, sizeof(record));
+    status = ifs->insertRecord(rec, rid);
+    delete ifs;
+    return status;
 }
 
 const Status RelCatalog::removeInfo(const string & relation)
 {
-  Status status;
-  RID rid;
-  HeapFileScan*  hfs;
-
-  if (relation.empty()) return BADCATPARM;
-
-
+    if (relation.empty())
+        return BADCATPARM;
+    
+    Status status;
+    RID rid;
+    
+    HeapFileScan *hfile = new HeapFileScan(RELCATNAME, status);
+    if (status != OK) {
+        delete hfile;
+        return status;
+    }
+    
+    if ((status = hfile->startScan(0, MAXNAME, STRING, relation.data(), EQ)) != OK){
+        delete hfile;
+        return status;
+    }
+    
+    while((status = hfile->scanNext(rid)) == OK) {
+        if ((status = hfile->deleteRecord()) != OK){
+            delete hfile;
+            return status;
+        }
+        
+        delete hfile;
+        return OK;
+    }
+    delete hfile;
+    return status;
 
 }
 
@@ -65,16 +113,39 @@ const Status AttrCatalog::getInfo(const string & relation,
 				  AttrDesc &record)
 {
 
-  Status status;
-  RID rid;
-  Record rec;
-  HeapFileScan*  hfs;
 
   if (relation.empty() || attrName.empty()) return BADCATPARM;
-
-
-
-
+    
+    Status status;
+    Record rec;
+    RID rid;
+    
+    HeapFileScan *hfile = new HeapFileScan(ATTRCATNAME, status);
+    if (status != OK) {
+        delete hfile;
+        return status;
+    }
+    
+    if ((status = hfile->startScan(0, MAXNAME, STRING, relation.data(), EQ)) != OK){
+        delete hfile;
+        return status;
+    }
+    
+    while((status = hfile->scanNext(rid)) == OK) {
+        if ((status = hfile->getRecord(rec)) != OK){
+            delete hfile;
+            return status;
+        }
+        memcpy(&record, rec.data, rec.length);
+        
+        if(strcmp(record.attrName, attrName.data()) == 0)
+        {
+            delete hfile;
+            return OK;
+        }
+    }
+    delete hfile;
+    return status;
 }
 
 
@@ -83,11 +154,18 @@ const Status AttrCatalog::addInfo(AttrDesc & record)
   RID rid;
   InsertFileScan*  ifs;
   Status status;
-
-
-
-
-
+    
+    ifs = new InsertFileScan(ATTRCATNAME, status);
+    if (status != OK) {
+        delete ifs;
+        return status;
+    }
+    Record rec;
+    
+    memcpy(&rec, &record, sizeof(record));
+    status = ifs->insertRecord(rec, rid);
+    delete ifs;
+    return status;
 }
 
 
@@ -98,10 +176,40 @@ const Status AttrCatalog::removeInfo(const string & relation,
   Record rec;
   RID rid;
   AttrDesc record;
-  HeapFileScan*  hfs;
+  HeapFileScan*  hfile;
 
   if (relation.empty() || attrName.empty()) return BADCATPARM;
-
+    
+    hfile = new HeapFileScan(ATTRCATNAME, status);
+    if (status != OK) {
+        delete hfile;
+        return status;
+    }
+    
+    if ((status = hfile->startScan(0, MAXNAME, STRING, relation.data(), EQ)) != OK){
+        delete hfile;
+        return status;
+    }
+    
+    while((status = hfile->scanNext(rid)) == OK) {
+        if ((status = hfile->getRecord(rec)) != OK){
+            delete hfile;
+            return status;
+        }
+        memcpy(&record, rec.data, rec.length);
+        
+        if(strcmp(record.attrName, attrName.data()) == 0)
+        {
+            if ((status = hfile->deleteRecord()) != OK){
+                delete hfile;
+                return status;
+            }
+            delete hfile;
+            return OK;
+        }
+    }
+    delete hfile;
+    return status;
 }
 
 
