@@ -34,8 +34,7 @@ const Status RelCatalog::help(const string & relation)
   int attrCnt;
 
   if (relation.empty()) return UT_Print(RELCATNAME);
-
-
+    
 
   return OK;
 }

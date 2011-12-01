@@ -23,20 +23,21 @@ const Status RelCatalog::getInfo(const string & relation, RelDesc &record)
         return status;
     }
 
-    if ((status = hfile->startScan(0, 32, STRING, relation.data(), EQ)) != OK){
+    if ((status = hfile->startScan(0, 32, STRING, relation.c_str(), EQ)) != OK){
         delete hfile;
         return status;
     }
 
-    while((status = hfile->scanNext(rid)) == OK) {
+    if((status = hfile->scanNext(rid)) == OK) {
         if ((status = hfile->getRecord(rec)) != OK){
             delete hfile;
             return status;
         }
         memcpy(&record, rec.data, rec.length);
-        delete hfile;
-        return OK;
+        status = hfile->endScan();
     }
+    
+    
     delete hfile;
     return status;
 }
@@ -75,19 +76,19 @@ const Status RelCatalog::removeInfo(const string & relation)
         return status;
     }
     
-    if ((status = hfile->startScan(0, MAXNAME, STRING, relation.data(), EQ)) != OK){
+    if ((status = hfile->startScan(0, MAXNAME, STRING, relation.c_str(), EQ)) != OK){
         delete hfile;
         return status;
     }
     
-    while((status = hfile->scanNext(rid)) == OK) {
+    if((status = hfile->scanNext(rid)) == OK) {
         if ((status = hfile->deleteRecord()) != OK){
             delete hfile;
             return status;
         }
         
-        delete hfile;
-        return OK;
+        status = hfile->endScan();
+
     }
     delete hfile;
     return status;
@@ -126,7 +127,7 @@ const Status AttrCatalog::getInfo(const string & relation,
         return status;
     }
     
-    if ((status = hfile->startScan(0, MAXNAME, STRING, relation.data(), EQ)) != OK){
+    if ((status = hfile->startScan(0, MAXNAME, STRING, relation.c_str(), EQ)) != OK){
         delete hfile;
         return status;
     }
@@ -138,10 +139,11 @@ const Status AttrCatalog::getInfo(const string & relation,
         }
         memcpy(&record, rec.data, rec.length);
         
-        if(strcmp(record.attrName, attrName.data()) == 0)
+        if(strcmp(record.attrName, attrName.c_str()) == 0)
         {
             delete hfile;
-            return OK;
+            status = hfile->endScan();
+            return status;
         }
     }
     delete hfile;
@@ -186,7 +188,7 @@ const Status AttrCatalog::removeInfo(const string & relation,
         return status;
     }
     
-    if ((status = hfile->startScan(0, MAXNAME, STRING, relation.data(), EQ)) != OK){
+    if ((status = hfile->startScan(0, MAXNAME, STRING, relation.c_str(), EQ)) != OK){
         delete hfile;
         return status;
     }
@@ -198,14 +200,15 @@ const Status AttrCatalog::removeInfo(const string & relation,
         }
         memcpy(&record, rec.data, rec.length);
         
-        if(strcmp(record.attrName, attrName.data()) == 0)
+        if(strcmp(record.attrName, attrName.c_str()) == 0)
         {
             if ((status = hfile->deleteRecord()) != OK){
                 delete hfile;
                 return status;
             }
+            status = hfile->endScan();
             delete hfile;
-            return OK;
+            return status;
         }
     }
     delete hfile;
@@ -222,8 +225,44 @@ const Status AttrCatalog::getRelInfo(const string & relation,
   Record rec;
   HeapFileScan*  hfs;
 
+    RelDesc rd;
+    int i = 0;
   if (relation.empty()) return BADCATPARM;
+    
+    status = relCat->getInfo(relation, rd); 
+    if( status != OK) return status;
+    attrCnt =rd.attrCnt;
+    attrs = new AttrDesc[attrCnt];
+    
+    hfs = new HeapFileScan(ATTRCATNAME, status);
+    if (status != OK) {
+        delete hfs;
+        return status;
+    }
+    
+    if ((status = hfs->startScan(0, MAXNAME, STRING, relation.c_str(), EQ)) != OK){
+        delete hfs;
+        return status;
+    }
+    
+    while((status = hfs->scanNext(rid)) == OK) {
+        if ((status = hfs->getRecord(rec)) != OK){
+            delete hfs;
+            return status;
+        }
+        
+        memcpy(&attrs[i], rec.data, rec.length);
+        i++;
+        
+    }
+    hfs->endScan();
+    delete hfs;
 
+    if(status != FILEEOF) {
+      
+        return  status;
+    }
+    else return OK; 
 
 
 

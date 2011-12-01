@@ -33,18 +33,13 @@ const Status UT_Load(const string & relation, const string & fileName)
     return UNIXERR;
 
   // get relation data
-
-
-
+    status = relCat->getInfo(relation, rd);
+    if(status != OK) return status;
+    status = attrCat->getRelInfo(relation, attrCnt, attrs);
+    if(status != OK) return status;
 
   // start insertFileScan on relation
-
-
-
-
-
-
-
+    iFile = new InsertFileScan(relation, status); 
 
   // allocate buffer to hold record read from unix file
   char *record;
@@ -63,6 +58,7 @@ const Status UT_Load(const string & relation, const string & fileName)
     records++;
   }
 
+    delete  attrs;
   // close heap file and unix file
   if (close(fd) < 0) return UNIXERR;
 
