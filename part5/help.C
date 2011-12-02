@@ -32,13 +32,29 @@ const Status RelCatalog::help(const string & relation)
   RelDesc rd;
   AttrDesc *attrs;
   int attrCnt;
-
+    char t;
   if (relation.empty()) return UT_Print(RELCATNAME);
     
   if((status = relCat->getInfo(relation, rd)) != OK) return status;
   if((status = attrCat->getRelInfo(relation, rd.attrCnt, attrs)) != OK) return status;
   
-
+    printf("Relation name: %s (%d attributes)\n",rd.relName,rd.attrCnt);
+    
+    printf("Attribute name\tOff\tT\tLen\tI\n\n");
+    for(int i = 0; i < rd.attrCnt; i++){
+        switch (attrs[i].attrType) {
+            case 0:
+                t = 's';
+                break;
+            case 1:
+                t = 'i';
+            case 2:
+                t = 'f';
+            default:
+                break;
+        }
+        printf("\t  %s\t%d\t%c\t%d\t%s\n",attrs[i].attrName,attrs[i].attrOffset,t,attrs[i].attrLen,"");
+    }
 
   return OK;
 }

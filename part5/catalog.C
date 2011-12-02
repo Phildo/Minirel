@@ -30,7 +30,6 @@ const Status RelCatalog::getInfo(const string & relation, RelDesc &record)
             return status;
         }
         memcpy(&record, rec.data, rec.length);
-        printf("RelCatalog:getInfo record returned: %s %d\n",record.relName, record.attrCnt);
         
         //status = hfile->endScan();
         delete  hfile;
@@ -55,7 +54,6 @@ const Status RelCatalog::addInfo(RelDesc & record)
     rec.data = &record;
     rec.length = sizeof(RelDesc);
 
-    printf("Inserting %s\n", record.relName);
 
     status = ifs->insertRecord(rec, rid);
     delete ifs;
@@ -133,11 +131,8 @@ const Status AttrCatalog::getInfo(const string & relation,
             return status;
         }
         memcpy(&record, rec.data, rec.length);
-                printf("AttrCatalog:getInfo record returned: %s %s %d %d\n", record.relName,record.attrName,record.attrType,record.attrOffset);
         if(attrName.compare(0,attrName.length()-1,record.attrName) == 0)
         {
-            //status = hfile->endScan();
-             printf("AttrCatalog:getInfo MATCHED record returned: %s %s %d %d\n", record.relName,record.attrName,record.attrType,record.attrOffset);
             delete  hfile;
             return  OK;
         }
@@ -160,7 +155,6 @@ const Status AttrCatalog::addInfo(AttrDesc & record)
     
     rec.data = &record;
     rec.length = sizeof(AttrDesc);
-    printf("Inserting %s / %s\n", record.attrName, record.relName);
     status = ifs->insertRecord(rec, rid);
     delete ifs;
     return status;
@@ -175,7 +169,6 @@ const Status AttrCatalog::removeInfo(const string & relation,
   RID rid;
   AttrDesc record;
   HeapFileScan*  hfile;
-    printf("Removing Info\n");
     if (relation.empty() || attrName.empty()) return BADCATPARM;
     
     hfile = new HeapFileScan(ATTRCATNAME, status);
@@ -192,7 +185,6 @@ const Status AttrCatalog::removeInfo(const string & relation,
             return status;
         }
         memcpy(&record, rec.data, rec.length);
-        printf("RemInfo: Comparing %s with %s results in: %d\n",record.attrName, attrName.c_str(),attrName.compare(0,attrName.length()-1,record.attrName));
         if(attrName.compare(0,attrName.length()-1,record.attrName) == 0)
         {
             if ((status = hfile->deleteRecord()) != OK){
@@ -200,7 +192,6 @@ const Status AttrCatalog::removeInfo(const string & relation,
             }
             //status = hfile->endScan();
             delete  hfile;
-            printf("Match Found\n");
             return OK;
         }
     }
@@ -232,20 +223,17 @@ const Status AttrCatalog::getRelInfo(const string & relation,
     }
     
     if ((status = hfs->startScan(0, MAXNAME, STRING, relation.c_str(), EQ)) != OK){
-        printf("AttrCatalog::getRelInfo --Status:%d\n",status);
 
         return status;
     }
     
     while((status = hfs->scanNext(rid)) == OK) {
         if ((status = hfs->getRecord(rec)) != OK){
-            printf("AttrCatalog::getRelInfo --Status:%d\n",status);
 
             return status;
         }
 
         memcpy(&attrs[i], rec.data, rec.length);
- printf("AttrCatalog::getRelInfo ad.attrName = %s  ad.attrType = %d  ad.attrLen = %d\n",attrs[i].attrName,attrs[i].attrType,attrs[i].attrLen);
         i++;
         
     }

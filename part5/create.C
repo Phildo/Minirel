@@ -44,7 +44,6 @@ const Status RelCatalog::createRel(const string & relation,
         strcpy(ad.attrName, attrList[i].attrName);
         ad.attrType = (int)attrList[i].attrType;
         ad.attrLen = attrList[i].attrLen;
-        printf("ad.attrName = %s  ad.attrType = %d  ad.attrLen = %d ad.attrOffset = %d\n",ad.attrName,ad.attrType,ad.attrLen,ad.attrOffset);
         CALL(attrCat->addInfo(ad));
     }
 
