@@ -35,6 +35,10 @@ const Status RelCatalog::help(const string & relation)
 
   if (relation.empty()) return UT_Print(RELCATNAME);
     
+  if((status = relCat->getInfo(relation, rd)) != OK) return status;
+  if((status = attrCat->getRelInfo(relation, rd.attrCnt, attrs)) != OK) return status;
+  
+
 
   return OK;
 }
