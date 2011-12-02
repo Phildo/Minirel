@@ -159,7 +159,7 @@ const Status AttrCatalog::addInfo(AttrDesc & record)
     Record rec;
     
     rec.data = &record;
-    rec.length = sizeof(RelDesc);
+    rec.length = sizeof(AttrDesc);
     printf("Inserting %s / %s\n", record.attrName, record.relName);
     status = ifs->insertRecord(rec, rid);
     delete ifs;
@@ -245,8 +245,7 @@ const Status AttrCatalog::getRelInfo(const string & relation,
         }
 
         memcpy(&attrs[i], rec.data, rec.length);
-        printf("AttrCatalog::getRelInfo --attrs[%d] = %s %d\n",i,attrs[i].attrName,attrCnt);
-
+ printf("AttrCatalog::getRelInfo ad.attrName = %s  ad.attrType = %d  ad.attrLen = %d\n",attrs[i].attrName,attrs[i].attrType,attrs[i].attrLen);
         i++;
         
     }

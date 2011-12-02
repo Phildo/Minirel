@@ -39,7 +39,14 @@ const Status UT_Load(const string & relation, const string & fileName)
 
     status = attrCat->getRelInfo(relation, attrCnt, attrs);
     if(status != OK) return status;
+    for(int i = 0; i < attrCnt; i++){
+               printf("ad.attrName = %s  ad.attrType = %d  ad.attrLen = %d\n",attrs[i].attrName,attrs[i].attrType,attrs[i].attrLen); 
 
+        width += attrs[i].attrLen;
+    }
+
+    printf("rd.relName = %s  rd.attrCnt = %d\n",rd.relName,rd.attrCnt);
+    printf("width = %d \n",width); 
 
   // start insertFileScan on relation
     iFile = new InsertFileScan(relation, status);
