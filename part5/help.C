@@ -53,7 +53,7 @@ const Status RelCatalog::help(const string & relation)
             default:
                 break;
         }
-        printf("\t  %s\t%d\t%c\t%d\t%s\n",attrs[i].attrName,attrs[i].attrOffset,t,attrs[i].attrLen,"");
+        printf("\t%s\t%d\t%c\t%d\t%s\n",attrs[i].attrName,attrs[i].attrOffset,t,attrs[i].attrLen,"");
     }
 
   return OK;

@@ -131,7 +131,7 @@ const Status AttrCatalog::getInfo(const string & relation,
             return status;
         }
         memcpy(&record, rec.data, rec.length);
-        if(attrName.compare(0,attrName.length()-1,record.attrName) == 0)
+        if(strcmp(record.attrName, attrName.c_str())==0)
         {
             delete  hfile;
             return  OK;
@@ -185,7 +185,7 @@ const Status AttrCatalog::removeInfo(const string & relation,
             return status;
         }
         memcpy(&record, rec.data, rec.length);
-        if(attrName.compare(0,attrName.length()-1,record.attrName) == 0)
+        if(strcmp(record.attrName, attrName.c_str())==0)
         {
             if ((status = hfile->deleteRecord()) != OK){
                 return status;
