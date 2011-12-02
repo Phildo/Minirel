@@ -8,7 +8,7 @@ const Status RelCatalog::createRel(const string & relation,
 {
   Status status;
   RelDesc rd;
-  AttrDesc ad;
+  AttrDesc ad,rec;
 
   if (relation.empty() || attrCnt < 1)
     return BADCATPARM;
@@ -18,12 +18,19 @@ const Status RelCatalog::createRel(const string & relation,
 
     status = getInfo(relation, rd);
     if(status == OK) return RELEXISTS;
-    
+
+    for(int i = 0; i < attrCnt; i++){
+        for(int j = i+1; j < attrCnt; j++){
+            if(strcmp(attrList[i].attrName, attrList[j].attrName)==0)
+                return DUPLATTR;
+        }
+    }
     strcpy(rd.relName, relation.c_str());
     rd.attrCnt = attrCnt;
     CALL(relCat->addInfo(rd))
     
     for(int i = 0; i < attrCnt; i++){
+       
         if(i == 0){
             //First attribute, then store the name of the relation, no need to do this everytime, also offset will clearly be 0
             strcpy(ad.relName, relation.c_str()); 
@@ -35,7 +42,7 @@ const Status RelCatalog::createRel(const string & relation,
         if(ad.attrOffset+attrList[i].attrLen > PAGESIZE) return ATTRTOOLONG;
         
         strcpy(ad.attrName, attrList[i].attrName);
-        ad.attrType = attrList[i].attrType;
+        ad.attrType = (int)attrList[i].attrType;
         ad.attrLen = attrList[i].attrLen;
         CALL(attrCat->addInfo(ad));
     }

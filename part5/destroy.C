@@ -44,9 +44,10 @@ const Status AttrCatalog::dropRelation(const string & relation)
     Status status = OK;
     RID rid;
     HeapFileScan*  hfs;
-        
+    int i = 0;
+    Record rec;    
+    AttrDesc ad;
     if (relation.empty()) return BADCATPARM;
-    
     hfs = new HeapFileScan(ATTRCATNAME, status);
     if (status != OK) {
         return status;
@@ -57,10 +58,17 @@ const Status AttrCatalog::dropRelation(const string & relation)
     }
     
     while((status = hfs->scanNext(rid)) == OK) {
-        if ((status = hfs->deleteRecord()) != OK) return status;
+        i++;
+        if( (status = hfs->getRecord(rec)) != OK)return  status;
+
+        memcpy(&ad, rec.data, rec.length);
+        if( (status = attrCat->removeInfo(relation, ad.attrName)) != OK)return  status;
+
+       // if ((status = hfs->deleteRecord()) != OK) return status;
     }
     delete hfs;
     if(status == FILEEOF){
+        if(i == 0) return RELNOTFOUND;
         return OK;
     }
     return status;
