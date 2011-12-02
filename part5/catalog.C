@@ -19,26 +19,21 @@ const Status RelCatalog::getInfo(const string & relation, RelDesc &record)
     
     HeapFileScan *hfile = new HeapFileScan(RELCATNAME, status);
     if (status != OK) {
-        delete hfile;
         return status;
     }
 
     if ((status = hfile->startScan(0, 32, STRING, relation.c_str(), EQ)) != OK){
-        delete hfile;
         return status;
     }
 
     if((status = hfile->scanNext(rid)) == OK) {
         if ((status = hfile->getRecord(rec)) != OK){
-            delete hfile;
             return status;
         }
         memcpy(&record, rec.data, rec.length);
         status = hfile->endScan();
     }
-    
-    
-    delete hfile;
+        
     return status;
 }
 
@@ -51,14 +46,12 @@ const Status RelCatalog::addInfo(RelDesc & record)
 
     ifs = new InsertFileScan(RELCATNAME, status);
     if (status != OK) {
-        delete ifs;
         return status;
     }
     Record rec;
     
     memcpy(&rec, &record, sizeof(record));
     status = ifs->insertRecord(rec, rid);
-    delete ifs;
     return status;
 }
 
@@ -72,25 +65,21 @@ const Status RelCatalog::removeInfo(const string & relation)
     
     HeapFileScan *hfile = new HeapFileScan(RELCATNAME, status);
     if (status != OK) {
-        delete hfile;
         return status;
     }
     
     if ((status = hfile->startScan(0, MAXNAME, STRING, relation.c_str(), EQ)) != OK){
-        delete hfile;
         return status;
     }
     
     if((status = hfile->scanNext(rid)) == OK) {
         if ((status = hfile->deleteRecord()) != OK){
-            delete hfile;
             return status;
         }
         
         status = hfile->endScan();
 
     }
-    delete hfile;
     return status;
 
 }
@@ -123,30 +112,25 @@ const Status AttrCatalog::getInfo(const string & relation,
     
     HeapFileScan *hfile = new HeapFileScan(ATTRCATNAME, status);
     if (status != OK) {
-        delete hfile;
         return status;
     }
     
     if ((status = hfile->startScan(0, MAXNAME, STRING, relation.c_str(), EQ)) != OK){
-        delete hfile;
         return status;
     }
     
     while((status = hfile->scanNext(rid)) == OK) {
         if ((status = hfile->getRecord(rec)) != OK){
-            delete hfile;
             return status;
         }
         memcpy(&record, rec.data, rec.length);
         
         if(strcmp(record.attrName, attrName.c_str()) == 0)
         {
-            delete hfile;
             status = hfile->endScan();
             return status;
         }
     }
-    delete hfile;
     return status;
 }
 
@@ -159,14 +143,12 @@ const Status AttrCatalog::addInfo(AttrDesc & record)
     
     ifs = new InsertFileScan(ATTRCATNAME, status);
     if (status != OK) {
-        delete ifs;
         return status;
     }
     Record rec;
     
     memcpy(&rec, &record, sizeof(record));
     status = ifs->insertRecord(rec, rid);
-    delete ifs;
     return status;
 }
 
@@ -184,18 +166,15 @@ const Status AttrCatalog::removeInfo(const string & relation,
     
     hfile = new HeapFileScan(ATTRCATNAME, status);
     if (status != OK) {
-        delete hfile;
         return status;
     }
     
     if ((status = hfile->startScan(0, MAXNAME, STRING, relation.c_str(), EQ)) != OK){
-        delete hfile;
         return status;
     }
     
     while((status = hfile->scanNext(rid)) == OK) {
         if ((status = hfile->getRecord(rec)) != OK){
-            delete hfile;
             return status;
         }
         memcpy(&record, rec.data, rec.length);
@@ -203,15 +182,12 @@ const Status AttrCatalog::removeInfo(const string & relation,
         if(strcmp(record.attrName, attrName.c_str()) == 0)
         {
             if ((status = hfile->deleteRecord()) != OK){
-                delete hfile;
                 return status;
             }
             status = hfile->endScan();
-            delete hfile;
             return status;
         }
     }
-    delete hfile;
     return status;
 }
 
@@ -236,18 +212,15 @@ const Status AttrCatalog::getRelInfo(const string & relation,
     
     hfs = new HeapFileScan(ATTRCATNAME, status);
     if (status != OK) {
-        delete hfs;
         return status;
     }
     
     if ((status = hfs->startScan(0, MAXNAME, STRING, relation.c_str(), EQ)) != OK){
-        delete hfs;
         return status;
     }
     
     while((status = hfs->scanNext(rid)) == OK) {
         if ((status = hfs->getRecord(rec)) != OK){
-            delete hfs;
             return status;
         }
         
@@ -256,7 +229,7 @@ const Status AttrCatalog::getRelInfo(const string & relation,
         
     }
     hfs->endScan();
-    delete hfs;
+   // delete hfs;
 
     if(status != FILEEOF) {
       
