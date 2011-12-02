@@ -205,6 +205,8 @@ HeapFileScan::HeapFileScan(const string & name,
 			   Status & status) : HeapFile(name, status)
 {
     filter = NULL;
+    printf("Start Scan for file %s\n", name.c_str());
+
 }
 
 const Status HeapFileScan::startScan(const int offset_,
@@ -213,6 +215,7 @@ const Status HeapFileScan::startScan(const int offset_,
 				     const char* filter_,
 				     const Operator op_)
 {
+    printf("Start Scan for term %s\n", filter_);
     if (!filter_) {                        // no filtering requested
         filter = NULL;
         return OK;
@@ -340,6 +343,7 @@ const Status HeapFileScan::scanNext(RID& outRid)
     // next one. Otherwise, get the next page of the file
     for(;;) 
     {
+        printf("Scanning...\n");
 	// Loop, looking for a record that satisfied the predicate.
 	// First try and get the next record off the current page
      	status  = curPage->nextRecord(curRec, nextRid);
@@ -417,6 +421,7 @@ const Status HeapFileScan::markDirty()
 
 const bool HeapFileScan::matchRec(const Record & rec) const
 {
+    printf("Rec: %s\n", rec.data);
     // no filtering requested
     if (!filter) return true;
 

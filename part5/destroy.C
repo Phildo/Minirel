@@ -59,9 +59,9 @@ const Status AttrCatalog::dropRelation(const string & relation)
     while((status = hfs->scanNext(rid)) == OK) {
         if ((status = hfs->deleteRecord()) != OK) return status;
     }
-    
+    delete hfs;
     if(status == FILEEOF){
-        status = hfs->endScan();
+        return OK;
     }
     return status;
 }

@@ -51,6 +51,7 @@ const Status UT_Load(const string & relation, const string & fileName)
 
   // read next input record from Unix file and insert it into relation
   while((nbytes = read(fd, record, width)) == width) {
+      
     RID rid;
     rec.data = record;
     rec.length = width;

@@ -23,7 +23,6 @@ extern AttrCatalog *attrCat;
 void UT_Quit(void)
 {
   // close relcat and attrcat
-
   delete relCat;
   delete attrCat;
 
