@@ -22,7 +22,7 @@ const Status RelCatalog::getInfo(const string & relation, RelDesc &record)
         return status;
     }
 
-    if ((status = hfile->startScan(0, 32, STRING, relation.c_str(), EQ)) != OK){
+    if ((status = hfile->startScan(0, MAXNAME, STRING, relation.c_str(), EQ)) != OK){
         return status;
     }
 
@@ -228,17 +228,11 @@ const Status AttrCatalog::getRelInfo(const string & relation,
         i++;
         
     }
-    hfs->endScan();
-   // delete hfs;
 
-    if(status != FILEEOF) {
-      
-        return  status;
+    if(status == FILEEOF){
+        status = hfs->endScan();
     }
-    else return OK; 
-
-
-
+    return status;
 }
 
 

@@ -41,13 +41,43 @@ const Status RelCatalog::destroyRel(const string & relation)
 
 const Status AttrCatalog::dropRelation(const string & relation)
 {
+    Status status = OK;
+    RID rid;
+    HeapFileScan*  hfs;
+        
+    if (relation.empty()) return BADCATPARM;
+    
+    hfs = new HeapFileScan(ATTRCATNAME, status);
+    if (status != OK) {
+        return status;
+    }
+    
+    if ((status = hfs->startScan(0, MAXNAME, STRING, relation.c_str(), EQ)) != OK){
+        return status;
+    }
+    
+    while((status = hfs->scanNext(rid)) == OK) {
+        if ((status = hfs->deleteRecord()) != OK) return status;
+    }
+    
+    if(status == FILEEOF){
+        status = hfs->endScan();
+    }
+    return status;
+}
+
+/*
+ * This SHOULD have worked, but it's crazy inefficient 
+ * (scans over table 1+n times)
+ 
+const Status AttrCatalog::dropRelation(const string & relation)
+{
   Status status = OK;
   AttrDesc *attrs;
   int attrCnt, i;
 
   if (relation.empty()) return BADCATPARM;
-    
-    
+
     CALL(attrCat->getRelInfo(relation, attrCnt, attrs));
     for(i = 0; i < attrCnt; i++){
         CALL(attrCat->removeInfo(relation, attrs[i].attrName));
@@ -58,5 +88,6 @@ const Status AttrCatalog::dropRelation(const string & relation)
     return status;
 
 }
+ */
 
 
