@@ -32,6 +32,7 @@ const Status QU_Delete(const string & relation,
     
     s = hfs->startScan(record.attrOffset, record.attrLen, type, attrValue, op);
     if(s != OK) return s;
+            case INTEGER:
 
     while(hfs->scanNext(rid) == OK){
         
