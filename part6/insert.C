@@ -17,24 +17,25 @@ const Status QU_Insert(const string & relation,
 // part 6
     Status s = OK;
     InsertFileScan *ifs;
-    //AttrDesc ad;
     RID rid;
     Record rec;
-    RelDesc rd;
     AttrDesc *tmpAttrs;
     int tmpAttrCnt;
     int length = 0;
     
-    s = relCat->getInfo(relation, rd);
-    if(s != OK) return s;
-    
 
+    
     s = attrCat->getRelInfo(relation, tmpAttrCnt, tmpAttrs);
     if(s != OK) return s;
     
+    if(tmpAttrCnt == attrCnt){
     for(int k = 0; k < tmpAttrCnt; k++){
+        if(attrList[k].attrValue == NULL) return ATTRTYPEMISMATCH;
         length += tmpAttrs[k].attrLen;
     }
+    }
+    else return  ATTRTYPEMISMATCH;
+    
     
     char *tmpArr =(char *) malloc(length);
     if(!tmpArr){
