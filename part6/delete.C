@@ -17,9 +17,33 @@ const Status QU_Delete(const string & relation,
 		       const char *attrValue)
 {
 // part 6
-return OK;
+    Status s = OK;
+    HeapFileScan *hfs;
+    AttrDesc record;
+    RID rid;
+    Record rec;
+    
+    s = attrCat->getInfo(relation, attrName, record);
+    if(s != OK) return s;
 
+    
+    hfs = new HeapFileScan(relation, s);
+    if(s != OK) return s;
+    
+    s = hfs->startScan(record.attrOffset, record.attrLen, type, attrValue, op);
+    if(s != OK) return s;
 
+    while(hfs->scanNext(rid) == OK){
+        
+        s = hfs->getRecord(rec);
+        if(s != OK) return s;
+        
+        s = hfs->deleteRecord();
+        if(s != OK) return s;
+    }
+    
+if(s == FILEEOF) return OK;
+else return s;
 
 }
 
