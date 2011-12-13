@@ -17,7 +17,7 @@ const Status QU_Insert(const string & relation,
 // part 6
     Status s = OK;
     InsertFileScan *ifs;
-    AttrDesc ad;
+    //AttrDesc ad;
     RID rid;
     Record rec;
     RelDesc rd;
@@ -43,12 +43,29 @@ const Status QU_Insert(const string & relation,
     
     for(int i = 0; i <attrCnt; i++){
         for(int j = 0 ; j < tmpAttrCnt; j ++){
-            if (strcmp(tmpAttrs[i].attrName, attrList[j].attrName) == 0) {
-                if (tmpAttrs[i].attrType != attrList[j].attrType) {
+            if (strcmp(tmpAttrs[j].attrName, attrList[i].attrName) == 0) {
+                if (tmpAttrs[j].attrType != attrList[i].attrType) {
                     return ATTRTYPEMISMATCH;
                 }
-
-            memcpy(tmpArr + tmpAttrs[j].attrOffset, attrList[i].attrValue, tmpAttrs[j].attrLen);
+                switch ((Datatype)tmpAttrs[j].attrType) {
+                    case INTEGER:
+                    {
+                        int a = atoi((char *)attrList[i].attrValue);
+                        memcpy(tmpArr + tmpAttrs[j].attrOffset, &a, tmpAttrs[j].attrLen);
+                        break;
+                    }
+                    case FLOAT:
+                    {
+                        float f =  atof((char *)attrList[i].attrValue);
+                        memcpy(tmpArr + tmpAttrs[j].attrOffset, &f, tmpAttrs[j].attrLen);
+                        break;  
+                    }
+                    case STRING:
+                    {
+                        memcpy(tmpArr + tmpAttrs[j].attrOffset, (char *)attrList[i].attrValue, tmpAttrs[j].attrLen);
+                        break;
+                    }
+                }
             break;
             }
         }

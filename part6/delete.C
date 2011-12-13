@@ -22,17 +22,43 @@ const Status QU_Delete(const string & relation,
     AttrDesc record;
     RID rid;
     Record rec;
-    
-    s = attrCat->getInfo(relation, attrName, record);
-    if(s != OK) return s;
 
-    
+
+
+
     hfs = new HeapFileScan(relation, s);
     if(s != OK) return s;
     
-    s = hfs->startScan(record.attrOffset, record.attrLen, type, attrValue, op);
-    if(s != OK) return s;
+    if(attrValue == NULL){
+        s = hfs->startScan(0, 0, type, NULL, op);
+        if(s != OK) return s;  
+    }
+    else{
+        
+        s = attrCat->getInfo(relation, attrName, record);
+        if(s != OK) return s;
+        
+        switch (type) {
             case INTEGER:
+            {
+                int i = atoi(attrValue);
+                attrValue = (char *)&i;
+                break;
+            }
+            case FLOAT:
+            {
+                float f = atof(attrValue);
+                attrValue = (char *)&f; 
+                break;
+            }
+            case STRING:
+            {
+                break;
+            }
+        }
+        s = hfs->startScan(record.attrOffset, record.attrLen, type, attrValue, op);
+        if(s != OK) return s;
+    }
 
     while(hfs->scanNext(rid) == OK){
         
