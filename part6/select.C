@@ -28,62 +28,51 @@ const Status QU_Select(const string & result,
 {
    // Qu_Select sets up things and then calls ScanSelect to do the actual work
     cout << "Doing QU_Select " << endl;
-    Status status;
+
+    Status s;
     AttrDesc attrDesc;
-    int intval;
-    float floatval;
     const char *filter;
+    AttrDesc* projAttrInfo = new AttrDesc[projCnt];
     
-    
-    AttrDesc* projDescs = new AttrDesc[projCnt];
-    
+    int length = 0;
     for(int i = 0; i < projCnt; i++){
-        if((status = attrCat->getInfo(projNames[i].relName, projNames[i].attrName, projDescs[i])) != OK){
-            return status;
-        }
+      s = attrCat->getInfo(projNames[i].relName, projNames[i].attrName, projAttrInfo[i]); 
+      if(s != OK) return s;
+      length += projAttrInfo[i].attrLen;
     }
     
-    if(attr == NULL){//unconditonal selection
-    }else if((status =attrCat-> getInfo(attr->relName, attr->attrName, attrDesc)) != OK){
-        return status;
+    if(attr == NULL)
+    {
+      s = ScanSelect(result, projCnt, projAttrInfo,NULL, op, NULL, length);
+      if(s != OK) return s;
     }
-    
-    
-    //get output record length from attrdesc strucres
-    int reclen = 0;
-    for (int i = 0; i < projCnt; i++){
-        reclen += projDescs[i].attrLen;
-    }
-    
-    if(attr == NULL){
-        if ((status = ScanSelect(result, projCnt, projDescs,NULL, op, NULL, reclen)) != OK){
-            return status;
-        }
-    }else{
-        switch(attrDesc.attrType){
-            case INTEGER:
-                intval = atoi(attrValue);
-                filter = (char *)&intval;
-                break;
-            case FLOAT:
-                floatval = atof(attrValue);
-                filter = (char *)&floatval;
-                break;
-            default:
-                filter = attrValue;
-                break;
-        }
+    else
+    {
+      s=attrCat->getInfo(attr->relName, attr->attrName, attrDesc);
+      if(s != OK) return s;
+
+      int i;
+      float f;
+      switch(attrDesc.attrType)
+      {
+          case INTEGER:
+              i = atoi(attrValue);
+              filter = (char *)&i;
+              break;
+          case FLOAT:
+              f = atof(attrValue);
+              filter = (char *)&f;
+              break;
+          default:
+              filter = attrValue;
+              break;
+      }
         
-        if((status = ScanSelect(result, projCnt, projDescs, &attrDesc, op, filter, reclen)) != OK){
-            return status;
-        }
-        
+      s = ScanSelect(result, projCnt, projAttrInfo, &attrDesc, op, filter, length);
+      if(s != OK) return s;
     }
-    
-    delete [] projDescs;
-    
-    return OK;
-    
+    delete projAttrInfo;
+    return s;
 }
 
 
@@ -96,52 +85,45 @@ const Status ScanSelect(const string & result,
 			const int reclen)
 {
     cout << "Doing HeapFileScan Selection using ScanSelect()" << endl;
-    Status status;
-    RID rid;
-    Record outputRec;
+
+    Status s;
+    Record outRec;
+    
+    InsertFileScan ifs(result, s);
+    if(s != OK) return s;
+    
+    char * outData = (char *)malloc(reclen);
+    outRec.data = (void *)outData;
+    outRec.length = reclen;
+    
+    HeapFileScan hfs(projNames->relName,s);
+    if(s != OK) return s; 
+    
+    if(filter == NULL)
+      if((s = hfs.startScan(0, 0, (Datatype)0, filter, op)) != OK)
+        return s;
+    else
+      if((s = hfs.startScan(attrDesc->attrOffset, attrDesc->attrLen, (Datatype)attrDesc->attrType, filter, op)) != OK)
+        return s;
+    
     Record rec;
-    
-    cout << "Doing HeapFileScan Selection using ScanSelect()" << endl;
-    
-    InsertFileScan resultRel(result, status);
-    if(status != OK) return status;
-    
-    char outputData[reclen];
-    outputRec.data = (void *)outputData;
-    outputRec.length = reclen;
-    
-    // HeapFileScan hfs(attrDesc->relName,status);
-    HeapFileScan hfs(projNames->relName,status);
-    if(status != OK) return status; 
-    
-    
-    if(filter == NULL){
-        if((status = hfs.startScan(0, 0, (Datatype)0, filter, op)) != OK){
-            return status;
-        }
-    }else{
-        if((status = hfs.startScan(attrDesc->attrOffset, attrDesc->attrLen, (Datatype)attrDesc->attrType, filter, op)) != OK){
-            return status;
-        }
-    }
-    
-    while((status = hfs.scanNext(rid)) == OK){
-        if((status = hfs.getRecord(rec)) != OK) return status;
+    RID rid;
+    while((s = hfs.scanNext(rid)) == OK)
+    {
+        s = hfs.getRecord(rec);
+        if(s != OK) return s;
         
-        int outputOffset = 0;
-        for( int i = 0; i < projCnt; i++){
-            memcpy(outputData + outputOffset, (char *)rec.data + projNames[i].attrOffset, projNames[i].attrLen);
-            outputOffset += projNames[i].attrLen;
+        int offset = 0;
+        for( int i = 0; i < projCnt; i++)
+        {
+            memcpy(outData+offset, (char *)rec.data+projNames[i].attrOffset, projNames[i].attrLen);
+            offset+=projNames[i].attrLen;
         }
         
-        RID outRID;
-        if((status = resultRel.insertRecord(outputRec,outRID)) != OK){
-            return status;
-        }
+        s = ifs.insertRecord(outRec,rid);
+        if(s != OK) return s;
     }
     
-    if(status == FILEEOF) return OK;
-    return status;
-
-
+    if(s == FILEEOF) s = OK;
+    return s;
 }

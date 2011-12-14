@@ -85,6 +85,5 @@ const Status QU_Insert(const string & relation,
     delete tmpArr;
     
     return OK;
-    
 }
 
