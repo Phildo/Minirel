@@ -16,7 +16,7 @@ const Status QU_Delete(const string & relation,
 		       const Datatype type, 
 		       const char *attrValue)
 {
-// part 6
+// part 6 
     Status s = OK;
     HeapFileScan *hfs;
     AttrDesc record;
