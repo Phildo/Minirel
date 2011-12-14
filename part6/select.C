@@ -98,13 +98,17 @@ const Status ScanSelect(const string & result,
     
     HeapFileScan hfs(projNames->relName,s);
     if(s != OK) return s; 
-    
+
     if(filter == NULL)
+    {
       if((s = hfs.startScan(0, 0, (Datatype)0, filter, op)) != OK)
         return s;
+    }
     else
+    {
       if((s = hfs.startScan(attrDesc->attrOffset, attrDesc->attrLen, (Datatype)attrDesc->attrType, filter, op)) != OK)
         return s;
+    }
     
     Record rec;
     RID rid;
