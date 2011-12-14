@@ -31,7 +31,6 @@ const Status QU_Select(const string & result,
 
     Status s;
     AttrDesc attrDesc;
-    const char *filter;
     AttrDesc* projAttrInfo = new AttrDesc[projCnt];
     
     int length = 0;
@@ -56,19 +55,25 @@ const Status QU_Select(const string & result,
       switch(attrDesc.attrType)
       {
           case INTEGER:
+          {
               i = atoi(attrValue);
-              filter = (char *)&i;
+              attrValue = (char *)&i;
               break;
+          }
           case FLOAT:
+          {
               f = atof(attrValue);
-              filter = (char *)&f;
+              attrValue = (char *)&f;
               break;
-          default:
-              filter = attrValue;
+          }
+          case STRING:
+          {
+              //do nothing
               break;
+          }
       }
         
-      s = ScanSelect(result, projCnt, projAttrInfo, &attrDesc, op, filter, length);
+      s = ScanSelect(result, projCnt, projAttrInfo, &attrDesc, op, attrValue, length);
       if(s != OK) return s;
     }
     delete projAttrInfo;
@@ -91,9 +96,12 @@ const Status ScanSelect(const string & result,
     
     InsertFileScan ifs(result, s);
     if(s != OK) return s;
-    
     char * outData = (char *)malloc(reclen);
-    outRec.data = (void *)outData;
+    if(!outData){
+        return INSUFMEM;
+    }
+
+    outRec.data = outData;
     outRec.length = reclen;
     
     HeapFileScan hfs(projNames->relName,s);
@@ -101,33 +109,38 @@ const Status ScanSelect(const string & result,
 
     if(filter == NULL)
     {
-      if((s = hfs.startScan(0, 0, (Datatype)0, filter, op)) != OK)
+      if((s = hfs.startScan(0, 0, STRING, NULL, op)) != OK)
         return s;
+
     }
     else
     {
       if((s = hfs.startScan(attrDesc->attrOffset, attrDesc->attrLen, (Datatype)attrDesc->attrType, filter, op)) != OK)
         return s;
+
     }
     
     Record rec;
     RID rid;
     while((s = hfs.scanNext(rid)) == OK)
     {
+
         s = hfs.getRecord(rec);
         if(s != OK) return s;
         
         int offset = 0;
         for( int i = 0; i < projCnt; i++)
         {
+
             memcpy(outData+offset, (char *)rec.data+projNames[i].attrOffset, projNames[i].attrLen);
             offset+=projNames[i].attrLen;
         }
         
         s = ifs.insertRecord(outRec,rid);
         if(s != OK) return s;
+
     }
-    
+
     if(s == FILEEOF) s = OK;
     return s;
 }
